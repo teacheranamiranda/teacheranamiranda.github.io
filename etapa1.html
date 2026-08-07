@@ -41,10 +41,20 @@
     0%, 100% { box-shadow: 0 0 0 4px #ffd447, 0 0 14px 2px rgba(255, 212, 71, 0.7); }
     50% { box-shadow: 0 0 0 6px #ffd447, 0 0 24px 8px rgba(255, 212, 71, 0.9); }
   }
-  .hud {
-    position: absolute; top: 3%; right: 2%;
-    font-size: 0.9vw; color: #4a3520;
+  .hud-card {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    background: #f2e6cf;
+    border: 1px solid #c9b48c;
+    border-radius: 10px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: #2c3a35;
   }
+  .hud-card .label { font-size: 0.75vw; letter-spacing: 0.05em; color: #6b5b3e; font-weight: 700; }
+  .hud-card .value { font-size: 1.5vw; font-weight: 700; }
+  .hud-card.coins .value { color: #a3720b; }
+  .xp-track { width: 80%; height: 5px; border-radius: 3px; background: #d8c8a4; overflow: hidden; margin-top: 2px; }
+  .xp-fill { height: 100%; background: #6b8f3d; }
   .locked-msg { text-align: center; color: #888; font-size: 14px; padding: 60px 20px; }
 </style>
 </head>
@@ -70,6 +80,8 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
+  const XP_PER_LEVEL = 100; // 1 aula completa (20 START + 40 LEVEL UP + 40 UNLOCK) = 1 nível
+
   const positions = [
     { n: 1, xPct: 16.6, yPct: 59.1 },
     { n: 2, xPct: 28.0, yPct: 43.0 },
@@ -79,8 +91,6 @@
     { n: 6, xPct: 78.6, yPct: 50.8 },
     { n: 7, xPct: 73.6, yPct: 33.2 }
   ];
-
-  const XP_MAX_ETAPA = 700;
 
   async function render() {
     const params = new URLSearchParams(window.location.search);
@@ -104,12 +114,16 @@
     const nosCompletos = data.nosCompletos || [];
     const noAtual = data.noAtual || 1;
     const xp = data.xp || 0;
+    const coins = data.coins || 0;
+
+    const level = Math.floor(xp / XP_PER_LEVEL) + 1;
+    const xpInLevel = xp % XP_PER_LEVEL;
+    const xpPct = Math.round((xpInLevel / XP_PER_LEVEL) * 100);
 
     let nodesHtml = "";
     positions.forEach(p => {
       const isDone = nosCompletos.includes(p.n);
       const isCurrent = p.n === noAtual && !isDone;
-      const isLocked = !isDone && !isCurrent;
       const lessonUrl = `aulas/etapa1-aula${p.n}.html?aluno=${encodeURIComponent(alunoId)}`;
 
       let classes = "node";
@@ -127,7 +141,23 @@
     app_el.innerHTML = `
       <div class="map-wrap">
         <img src="images/etapa1-mapa.png" alt="Mapa da Etapa 1 — Construindo a própria voz" />
-        <div class="hud">XP ${xp}/${XP_MAX_ETAPA}</div>
+
+        <div class="hud-card" style="left:59.3%; top:9.3%; width:9%; height:11%;">
+          <span class="label">LEVEL</span>
+          <span class="value">${level}</span>
+        </div>
+
+        <div class="hud-card" style="left:71.0%; top:9.3%; width:9.5%; height:11%;">
+          <span class="label">XP</span>
+          <span class="value" style="font-size:1.1vw;">${xpInLevel}/${XP_PER_LEVEL}</span>
+          <div class="xp-track"><div class="xp-fill" style="width:${xpPct}%;"></div></div>
+        </div>
+
+        <div class="hud-card coins" style="left:83.5%; top:9.3%; width:9.5%; height:11%;">
+          <span class="label">COINS</span>
+          <span class="value">${coins}</span>
+        </div>
+
         ${nodesHtml}
       </div>
     `;
