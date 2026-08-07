@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Level Up Method — Etapa 1</title>
+<style>
+  body { font-family: -apple-system, Arial, sans-serif; background: #14161a; color: #eee; margin: 0; padding: 24px; }
+  .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+  .stage-label { font-size: 13px; color: #999; margin: 0; }
+  .stage-title { font-size: 18px; font-weight: 600; margin: 0; }
+  .xp-wrap { text-align: right; }
+  .xp-bar-track { width: 140px; height: 8px; border-radius: 4px; background: #2a2d33; overflow: hidden; }
+  .xp-bar-fill { height: 100%; background: #639922; transition: width 0.4s; }
+  .legend { display: flex; gap: 20px; font-size: 13px; color: #999; margin-top: 8px; }
+  a.node-link { cursor: pointer; }
+  .locked-msg { text-align: center; color: #888; font-size: 14px; margin-top: 40px; }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <p class="locked-msg">Carregando progresso...</p>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  // Config do projeto Firebase (Level Up Method)
+  const firebaseConfig = {
+    apiKey: "AIzaSyAqczo4JjxOm_RvN4SH6Mo3eTe6cDRqLiI",
+    authDomain: "level-up-method.firebaseapp.com",
+    projectId: "level-up-method",
+    storageBucket: "level-up-method.firebasestorage.app",
+    messagingSenderId: "69672690105",
+    appId: "1:69672690105:web:d7d23b3b8f8ea7e3e6d668"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Posições dos 7 nós no mapa (mesmo layout do protótipo)
+  const positions = [
+    { n: 1, x: 60, y: 380 },
+    { n: 2, x: 160, y: 330 },
+    { n: 3, x: 120, y: 260 },
+    { n: 4, x: 260, y: 230 },
+    { n: 5, x: 340, y: 170 },
+    { n: 6, x: 300, y: 90 },
+    { n: 7, x: 420, y: 50 }
+  ];
+
+  const XP_MAX_ETAPA = 700; // 100 XP por aula x 7 aulas — ajustável depois
+
+  async function render() {
+    const params = new URLSearchParams(window.location.search);
+    const alunoId = params.get("aluno");
+    const app_el = document.getElementById("app");
+
+    if (!alunoId) {
+      app_el.innerHTML = '<p class="locked-msg">Link inválido: falta o identificador do aluno na URL (?aluno=...)</p>';
+      return;
+    }
+
+    const ref = doc(db, "alunos", alunoId);
+    const snap = await getDoc(ref);
+
+    if (!snap.exists()) {
+      app_el.innerHTML = '<p class="locked-msg">Aluno não encontrado. Confira o link ou fale com a Teacher Ana.</p>';
+      return;
+    }
+
+    const data = snap.data();
+    const nosCompletos = data.nosCompletos || [];
+    const noAtual = data.noAtual || 1;
+    const xp = data.xp || 0;
+    const nome = data.nome || "aluno";
+
+    const xpPct = Math.min(100, Math.round((xp / XP_MAX_ETAPA) * 100));
+
+    let nodesHtml = "";
+    let pathD = `M ${positions[0].x} ${positions[0].y} `;
+    for (let i = 1; i < positions.length; i++) {
+      pathD += `L ${positions[i].x} ${positions[i].y} `;
+    }
+
+    positions.forEach(p => {
+      const isDone = nosCompletos.includes(p.n);
+      const isCurrent = p.n === noAtual && !isDone;
+      const isLocked = !isDone && !isCurrent;
+
+      let fill = "#D3D1C7", textFill = "#5F5E5A", extra = "";
+      if (isDone) { fill = "#97C459"; textFill = "#173404"; }
+      if (isCurrent) { fill = "#EF9F27"; textFill = "#412402"; extra = `<circle cx="${p.x}" cy="${p.y}" r="30" fill="none" stroke="#BA7517" stroke-width="3" style="pointer-events:none;" />`; }
+
+      const r = isCurrent ? 30 : 26;
+      const lessonUrl = `aulas/etapa1-aula${p.n}.html?aluno=${encodeURIComponent(alunoId)}`;
+
+      if (isLocked) {
+        nodesHtml += `<g><circle cx="${p.x}" cy="${p.y}" r="${r}" fill="${fill}" /><text x="${p.x}" y="${p.y + 7}" text-anchor="middle" font-size="18" font-weight="600" fill="${textFill}">${p.n}</text></g>`;
+      } else {
+        nodesHtml += `<a href="${lessonUrl}" class="node-link"><circle cx="${p.x}" cy="${p.y}" r="${r}" fill="${fill}" />${extra}<text x="${p.x}" y="${p.y + 7}" text-anchor="middle" font-size="18" font-weight="600" fill="${textFill}" style="pointer-events:none;">${p.n}</text></a>`;
+      }
+    });
+
+    app_el.innerHTML = `
+      <div class="header">
+        <div>
+          <p class="stage-label">Etapa 1 · ${nome}</p>
+          <p class="stage-title">Construindo a própria voz</p>
+        </div>
+        <div class="xp-wrap">
+          <p class="stage-label">XP: ${xp} / ${XP_MAX_ETAPA}</p>
+          <div class="xp-bar-track"><div class="xp-bar-fill" style="width:${xpPct}%;"></div></div>
+        </div>
+      </div>
+      <svg viewBox="0 0 640 430" style="width:100%; height:auto; display:block;">
+        <path d="${pathD}" fill="none" stroke="#3a3d43" stroke-width="4" stroke-dasharray="2 10" stroke-linecap="round" />
+        ${nodesHtml}
+      </svg>
+      <div class="legend">
+        <span>🟢 completa</span>
+        <span>🟠 atual</span>
+        <span>⚪ bloqueada</span>
+      </div>
+    `;
+  }
+
+  render();
+</script>
+
+</body>
+</html>
