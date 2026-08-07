@@ -4,6 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>The Level Up Method — Etapa 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&display=swap" rel="stylesheet">
 <style>
   body { font-family: -apple-system, Arial, sans-serif; background: #14161a; color: #eee; margin: 0; padding: 0; }
   .map-wrap { position: relative; width: 100%; max-width: 1536px; margin: 0 auto; }
@@ -45,15 +47,16 @@
     position: absolute;
     transform: translate(-50%, -50%);
     background: #f2e6cf;
-    border: 1px solid #c9b48c;
-    border-radius: 10px;
+    border-radius: 14px;
+    box-shadow: 0 0 0 1px #c9b48c, inset 0 1px 2px rgba(255,255,255,0.6);
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     color: #2c3a35;
+    font-family: 'Fredoka', -apple-system, Arial, sans-serif;
   }
-  .hud-card .label { font-size: 0.75vw; letter-spacing: 0.05em; color: #6b5b3e; font-weight: 700; }
-  .hud-card .value { font-size: 1.5vw; font-weight: 700; }
+  .hud-card .label { font-size: 0.78vw; letter-spacing: 0.06em; color: #6b5b3e; font-weight: 600; }
+  .hud-card .value { font-size: 1.6vw; font-weight: 700; display: flex; align-items: center; gap: 4px; }
   .hud-card.coins .value { color: #a3720b; }
-  .xp-track { width: 80%; height: 5px; border-radius: 3px; background: #d8c8a4; overflow: hidden; margin-top: 2px; }
+  .xp-track { width: 78%; height: 6px; border-radius: 3px; background: #d8c8a4; overflow: hidden; margin-top: 3px; }
   .xp-fill { height: 100%; background: #6b8f3d; }
   .locked-msg { text-align: center; color: #888; font-size: 14px; padding: 60px 20px; }
 </style>
@@ -142,20 +145,20 @@
       <div class="map-wrap">
         <img src="images/etapa1-mapa.png" alt="Mapa da Etapa 1 — Construindo a própria voz" />
 
-        <div class="hud-card" style="left:59.3%; top:9.3%; width:9%; height:11%;">
+        <div class="hud-card" style="left:59.4%; top:9.5%; width:9.2%; height:12.5%;">
           <span class="label">LEVEL</span>
-          <span class="value">${level}</span>
+          <span class="value">${level} ⭐</span>
         </div>
 
-        <div class="hud-card" style="left:71.0%; top:9.3%; width:9.5%; height:11%;">
+        <div class="hud-card" style="left:71.2%; top:9.5%; width:9.7%; height:12.5%;">
           <span class="label">XP</span>
-          <span class="value" style="font-size:1.1vw;">${xpInLevel}/${XP_PER_LEVEL}</span>
+          <span class="value" style="font-size:1.15vw;">${xpInLevel}/${XP_PER_LEVEL}</span>
           <div class="xp-track"><div class="xp-fill" style="width:${xpPct}%;"></div></div>
         </div>
 
-        <div class="hud-card coins" style="left:83.5%; top:9.3%; width:9.5%; height:11%;">
+        <div class="hud-card coins" style="left:83.7%; top:9.5%; width:9.7%; height:12.5%;">
           <span class="label">COINS</span>
-          <span class="value">${coins}</span>
+          <span class="value">${coins} 🪙</span>
         </div>
 
         ${nodesHtml}
