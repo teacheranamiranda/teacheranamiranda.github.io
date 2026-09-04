@@ -5,66 +5,89 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>The Level Up Method — Etapa 1</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-  body { font-family: -apple-system, Arial, sans-serif; background: #14161a; color: #eee; margin: 0; padding: 0; }
+  body { font-family: 'Fredoka', -apple-system, Arial, sans-serif; background: #14161a; color: #eee; margin: 0; padding: 0; }
   .map-wrap { position: relative; width: 100%; max-width: 1536px; margin: 0 auto; }
-  .map-wrap img { width: 100%; display: block; }
+  .map-wrap img.mapa { width: 100%; display: block; }
+
+  /* ---------- NÓS ---------- */
   .node {
     position: absolute;
-    width: 6.2%;
+    width: 5.6%;
     aspect-ratio: 1 / 1;
     transform: translate(-50%, -50%);
     border-radius: 50%;
+    text-decoration: none;
   }
+  .node.prova { width: 8.8%; aspect-ratio: 121 / 138; border-radius: 46%; }
   .node.clickable { cursor: pointer; }
+  .node.clickable:hover { transform: translate(-50%, -50%) scale(1.08); transition: transform .15s ease; }
   .node.locked {
-    background: rgba(10, 10, 10, 0.55);
+    background: rgba(24, 20, 16, 0.86);
     display: flex; align-items: center; justify-content: center;
-    font-size: 1.4vw;
+    font-size: 1.75vw;
+    filter: grayscale(.4);
+    box-shadow: inset 0 0 0.6vw rgba(0,0,0,.55);
   }
-  .node.current {
-    box-shadow: 0 0 0 4px #ffd447, 0 0 18px 4px rgba(255, 212, 71, 0.8);
-    animation: pulse 1.4s infinite;
-  }
+  .node.locked.prova { font-size: 2.6vw; }
+  .node.current { animation: pulse 1.5s infinite; }
   .node.done::after {
     content: "✓";
     position: absolute;
-    top: -6px; right: -6px;
+    top: -4%; right: -4%;
     background: #3b6d11;
     color: #eaf3de;
-    width: 22px; height: 22px;
+    width: 34%; height: 34%;
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 700;
-    border: 2px solid #14161a;
+    font-size: 0.95vw; font-weight: 700;
+    border: 0.16vw solid #f3e7c8;
+    box-shadow: 0 2px 5px rgba(0,0,0,.35);
   }
   @keyframes pulse {
-    0%, 100% { box-shadow: 0 0 0 4px #ffd447, 0 0 14px 2px rgba(255, 212, 71, 0.7); }
-    50% { box-shadow: 0 0 0 6px #ffd447, 0 0 24px 8px rgba(255, 212, 71, 0.9); }
+    0%, 100% { box-shadow: 0 0 0 0.28vw #ffd447, 0 0 1vw 0.15vw rgba(255,212,71,.75); }
+    50%      { box-shadow: 0 0 0 0.42vw #ffd447, 0 0 1.7vw 0.55vw rgba(255,212,71,.95); }
   }
-  .hud-card {
+
+  /* ---------- HUD ---------- */
+  .hud {
     position: absolute;
-    transform: translate(-50%, -50%);
-    background: #f2e6cf;
-    border-radius: 14px;
-    box-shadow: 0 0 0 1px #c9b48c, inset 0 1px 2px rgba(255,255,255,0.6);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    color: #2c3a35;
-    font-family: 'Fredoka', -apple-system, Arial, sans-serif;
+    top: 3.4%; right: 2.6%;
+    display: flex; align-items: center; gap: 1.35vw;
+    padding: 0.7vw 1.5vw;
+    background: #f6ecd4;
+    border: 0.19vw solid #b98f3e;
+    border-radius: 1.1vw;
+    box-shadow: 0 0.35vw 1vw rgba(0,0,0,.3), inset 0 0 0 0.12vw #fdf7e6;
+    color: #2f4438;
   }
-  .hud-card .label { font-size: 0.78vw; letter-spacing: 0.06em; color: #6b5b3e; font-weight: 600; }
-  .hud-card .value { font-size: 1.6vw; font-weight: 700; display: flex; align-items: center; gap: 4px; }
-  .hud-card.coins .value { color: #a3720b; }
-  .xp-track { width: 78%; height: 6px; border-radius: 3px; background: #d8c8a4; overflow: hidden; margin-top: 3px; }
-  .xp-fill { height: 100%; background: #6b8f3d; }
-  .locked-msg { text-align: center; color: #888; font-size: 14px; padding: 60px 20px; }
+  .hud .sep { width: 0.11vw; height: 2.5vw; background: rgba(185,143,62,.45); border-radius: 2px; }
+  .hud .who { display: flex; align-items: center; gap: 0.55vw; }
+  .hud .av {
+    width: 2.4vw; height: 2.4vw; border-radius: 50%;
+    background: #dcc79a; border: 0.14vw solid #b98f3e;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.15vw; font-weight: 700; color: #6b4f1c;
+  }
+  .hud .nome { font-size: 1.1vw; font-weight: 700; max-width: 7.5vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .hud .blk { display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.05; height: 2.9vw; }
+  .hud .lab { font-size: 0.62vw; letter-spacing: .12em; font-weight: 600; color: #8a6c34; }
+  .hud .val { font-size: 1.3vw; font-weight: 700; display: flex; align-items: baseline; gap: 0.25vw; margin-top: 0.12vw; }
+  .hud .val.coins { color: #b07c0c; }
+  .hud .xpblk { min-width: 6.4vw; }
+  .hud .xpnum { font-size: 1.0vw; font-weight: 700; margin-top: 0.12vw; }
+  .xp-track { width: 100%; height: 0.55vw; border-radius: 0.3vw; background: #d9c69c; overflow: hidden; margin-top: 0.22vw; box-shadow: inset 0 1px 2px rgba(0,0,0,.18); }
+  .xp-fill { height: 100%; background: linear-gradient(90deg,#7fa04a,#a8c46a); transition: width .8s ease; }
+
+  .msg { text-align: center; color: #cdbf9d; font-size: 15px; padding: 70px 20px; }
+  .aviso { position: absolute; left: 50%; bottom: 3%; transform: translateX(-50%); background: rgba(20,22,26,.82); color: #f3e7c8; font-size: 0.85vw; padding: 0.5vw 1vw; border-radius: 0.7vw; }
 </style>
 </head>
 <body>
 
 <div id="app">
-  <p class="locked-msg">Carregando progresso...</p>
+  <p class="msg">Carregando progresso...</p>
 </div>
 
 <script type="module">
@@ -83,82 +106,105 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  const XP_PER_LEVEL = 100; // 1 aula completa (20 START + 40 LEVEL UP + 40 UNLOCK) = 1 nível
+  const XP_PER_LEVEL = 100;   // 1 aula completa (20 START + 40 LEVEL UP + 40 UNLOCK)
 
+  /* Etapa 1 = 10 aulas + 1 prova final (nó 11, o selo do troféu).
+     Coordenadas em % da arte etapa1-mapa.png (1536x1024). */
   const positions = [
-    { n: 1, xPct: 16.6, yPct: 59.1 },
-    { n: 2, xPct: 28.0, yPct: 43.0 },
-    { n: 3, xPct: 45.2, yPct: 26.4 },
-    { n: 4, xPct: 51.1, yPct: 48.3 },
-    { n: 5, xPct: 62.2, yPct: 62.0 },
-    { n: 6, xPct: 78.6, yPct: 50.8 },
-    { n: 7, xPct: 73.6, yPct: 33.2 }
+    { n: 1,  xPct: 16.05, yPct: 31.88 },
+    { n: 2,  xPct: 28.90, yPct: 31.83 },
+    { n: 3,  xPct: 42.77, yPct: 31.88 },
+    { n: 4,  xPct: 56.70, yPct: 31.85 },
+    { n: 5,  xPct: 70.20, yPct: 31.87 },
+    { n: 6,  xPct: 75.43, yPct: 50.94 },
+    { n: 7,  xPct: 66.19, yPct: 65.42 },
+    { n: 8,  xPct: 53.08, yPct: 65.32 },
+    { n: 9,  xPct: 40.34, yPct: 65.38 },
+    { n: 10, xPct: 27.63, yPct: 65.27 },
+    { n: 11, xPct: 10.42, yPct: 64.65, prova: true }
   ];
+
+  const urlDe = (p, alunoId) => (p.prova ? "aulas/etapa1-prova.html" : "aulas/etapa1-aula" + p.n + ".html")
+    + "?aluno=" + encodeURIComponent(alunoId);
 
   async function render() {
     const params = new URLSearchParams(window.location.search);
     const alunoId = params.get("aluno");
-    const app_el = document.getElementById("app");
+    const el = document.getElementById("app");
 
     if (!alunoId) {
-      app_el.innerHTML = '<p class="locked-msg">Link inválido: falta o identificador do aluno na URL (?aluno=...)</p>';
+      el.innerHTML = '<p class="msg">Link inválido: falta o identificador do aluno na URL (?aluno=...)</p>';
       return;
     }
 
-    const ref = doc(db, "alunos", alunoId);
-    const snap = await getDoc(ref);
-
-    if (!snap.exists()) {
-      app_el.innerHTML = '<p class="locked-msg">Aluno não encontrado. Confira o link ou fale com a Teacher Ana.</p>';
+    let data;
+    try {
+      const snap = await getDoc(doc(db, "alunos", alunoId));
+      if (!snap.exists()) {
+        el.innerHTML = '<p class="msg">Aluno não encontrado. Confira o link ou fale com a Teacher Ana.</p>';
+        return;
+      }
+      data = snap.data();
+    } catch (e) {
+      el.innerHTML = '<p class="msg">Não consegui carregar o progresso agora. Tente de novo em instantes.</p>';
       return;
     }
 
-    const data = snap.data();
     const nosCompletos = data.nosCompletos || [];
     const noAtual = data.noAtual || 1;
     const xp = data.xp || 0;
     const coins = data.coins || 0;
+    const nome = data.nome || "Aluno";
 
-    const level = Math.floor(xp / XP_PER_LEVEL) + 1;
-    const xpInLevel = xp % XP_PER_LEVEL;
-    const xpPct = Math.round((xpInLevel / XP_PER_LEVEL) * 100);
+    const level   = Math.floor(xp / XP_PER_LEVEL) + 1;
+    const xpInLvl = xp % XP_PER_LEVEL;
+    const xpPct   = Math.round(xpInLvl / XP_PER_LEVEL * 100);
 
     let nodesHtml = "";
     positions.forEach(p => {
-      const isDone = nosCompletos.includes(p.n);
+      const isDone    = nosCompletos.includes(p.n);
       const isCurrent = p.n === noAtual && !isDone;
-      const lessonUrl = `aulas/etapa1-aula${p.n}.html?aluno=${encodeURIComponent(alunoId)}`;
+      const aberto    = isDone || isCurrent;
+      let classes = "node" + (p.prova ? " prova" : "");
+      let inner = "", tag = "div", attrs = "";
 
-      let classes = "node";
-      let inner = "";
-      let tag = "div";
-      let hrefAttr = "";
-
-      if (isDone) { classes += " done clickable"; tag = "a"; hrefAttr = `href="${lessonUrl}"`; }
-      else if (isCurrent) { classes += " current clickable"; tag = "a"; hrefAttr = `href="${lessonUrl}"`; }
-      else { classes += " locked"; inner = "🔒"; }
-
-      nodesHtml += `<${tag} ${hrefAttr} class="${classes}" style="left:${p.xPct}%; top:${p.yPct}%;">${inner}</${tag}>`;
+      if (aberto) {
+        classes += (isDone ? " done" : " current") + " clickable";
+        tag = "a";
+        attrs = 'href="' + urlDe(p, alunoId) + '"';
+      } else {
+        classes += " locked";
+        inner = "🔒";
+      }
+      nodesHtml += "<" + tag + " " + attrs + ' class="' + classes +
+        '" style="left:' + p.xPct + '%; top:' + p.yPct + '%;">' + inner + "</" + tag + ">";
     });
 
-    app_el.innerHTML = `
+    el.innerHTML = `
       <div class="map-wrap">
-        <img src="images/etapa1-mapa.png" alt="Mapa da Etapa 1 — Construindo a própria voz" />
+        <img class="mapa" src="images/etapa1-mapa.png" alt="Mapa da Etapa 1 — Construindo a própria voz" />
 
-        <div class="hud-card" style="left:59.4%; top:9.5%; width:9.5%; height:11.5%;">
-          <span class="label">LEVEL</span>
-          <span class="value">${level} ⭐</span>
-        </div>
-
-        <div class="hud-card" style="left:71.2%; top:9.5%; width:10.5%; height:11.5%;">
-          <span class="label">XP</span>
-          <span class="value" style="font-size:1.15vw;">${xpInLevel}/${XP_PER_LEVEL}</span>
-          <div class="xp-track"><div class="xp-fill" style="width:${xpPct}%;"></div></div>
-        </div>
-
-        <div class="hud-card coins" style="left:82.8%; top:9.5%; width:9.5%; height:11.5%;">
-          <span class="label">COINS</span>
-          <span class="value">${coins} 🪙</span>
+        <div class="hud">
+          <div class="who">
+            <div class="av">${nome.trim().charAt(0).toUpperCase()}</div>
+            <div class="nome">${nome}</div>
+          </div>
+          <div class="sep"></div>
+          <div class="blk">
+            <span class="lab">LEVEL</span>
+            <span class="val">${level} ⭐</span>
+          </div>
+          <div class="sep"></div>
+          <div class="blk xpblk">
+            <span class="lab">XP</span>
+            <span class="xpnum">${xpInLvl}/${XP_PER_LEVEL}</span>
+            <div class="xp-track"><div class="xp-fill" style="width:${xpPct}%;"></div></div>
+          </div>
+          <div class="sep"></div>
+          <div class="blk">
+            <span class="lab">COINS</span>
+            <span class="val coins">${coins} 🪙</span>
+          </div>
         </div>
 
         ${nodesHtml}
