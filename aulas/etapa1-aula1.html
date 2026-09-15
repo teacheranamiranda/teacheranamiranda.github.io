@@ -17,7 +17,7 @@
   --tinta:#3A2632;
 }
 *,*::before,*::after{box-sizing:border-box;}
-html,body{margin:0;padding:0;background:#FAF6F1;height:100%;}
+html,body{margin:0;padding:0;background:#FAF6F1;}
 .reveal-viewport{background:#FAF6F1;}
 .reveal{font-size:26px !important;font-family:'Karla',sans-serif;color:var(--tinta);}
 .reveal h1,.reveal h2,.reveal h3{font-family:'Libre Caslon Text',serif;font-weight:700;text-transform:none;letter-spacing:0;margin:0;color:var(--vinho);line-height:1.12;}
@@ -28,9 +28,7 @@ html,body{margin:0;padding:0;background:#FAF6F1;height:100%;}
 .reveal .slide-number{background:rgba(75,46,66,.75);font-family:'Karla',sans-serif;}
 
 /* ---------- LAYOUT BASE ---------- */
-.reveal .slides .slide{height:720px;width:1280px;position:relative;overflow:hidden;display:flex;flex-direction:column;}
-/* o Reveal 5 poe a classe 'slide' no proprio container .reveal; sem isto ele trava em 1280x720 e nao escala */
-.reveal.slide{width:100%;height:100%;display:block;}
+.slide{height:720px;width:1280px;position:relative;overflow:hidden;display:flex;flex-direction:column;}
 .light{background:var(--creme);}
 .dark{background:var(--vinho);color:var(--creme);}
 .dark h1,.dark h2,.dark h3{color:var(--creme);}
@@ -83,30 +81,39 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
 .mkey.alt{background:var(--coral);}
 .gab{margin-top:14px;font-family:'Karla',sans-serif;font-size:17px;color:var(--salvia);font-weight:700;display:none;}
 .gab.on{display:block;}
-.tbtn{align-self:flex-start;margin-top:12px;background:var(--coral);color:#fff;border:none;border-radius:999px;padding:9px 22px;font-family:'Karla',sans-serif;font-weight:700;font-size:15px;letter-spacing:.06em;cursor:pointer;}
+.tbtn{align-self:flex-start;margin-top:12px;background:var(--coral);color:#fff;border:none;border-radius:999px;padding:11px 24px;font-family:'Karla',sans-serif;font-weight:700;font-size:15px;letter-spacing:.06em;cursor:pointer;}
 .tbtn:hover{background:#c87d63;}
 
 
 
+
+/* ---------- MODO CONTROLE REMOTO (aluno clicando pelo Zoom) ---------- */
+.pchip,.chip,.opt,.mitem,.eh,.cc,.flip,.gap,.tbtn,.sbtn,.nbtn,.bub.rep{touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+.pchip:active,.chip:active,.opt:active,.mitem:active,.gap:active,.eh:active,.bub.rep:active{transform:scale(.96);}
+.tbtn:active,.sbtn:active,.nbtn:active{transform:scale(.96);}
+.tip{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;background:#FBEEE7;border:2px solid var(--coral);color:var(--vinho);font-family:'Karla',sans-serif;font-weight:600;font-size:16px;padding:7px 16px;border-radius:999px;margin-bottom:12px;}
+.tip b{font-weight:700;}
+
 /* ---------- GAP FILL (arrastar) ---------- */
 .pool{display:flex;gap:12px;justify-content:center;background:#fff;border-radius:16px;padding:12px;box-shadow:0 3px 12px rgba(75,46,66,.06);margin-bottom:14px;}
-.pchip{background:var(--coral);color:#fff;border:2px solid transparent;border-radius:999px;padding:7px 22px;font-family:'Karla',sans-serif;font-weight:700;font-size:19px;cursor:grab;user-select:none;transition:.15s;}
+.pchip{background:var(--coral);color:#fff;border:3px solid transparent;border-radius:999px;padding:11px 30px;font-family:'Karla',sans-serif;font-weight:700;font-size:21px;cursor:pointer;user-select:none;transition:.12s;box-shadow:0 3px 0 rgba(75,46,66,.18);}
 .pchip:hover{background:#c87d63;}
 .pchip.sel{border-color:var(--vinho);background:var(--vinho);}
 .pchip.drag{opacity:.5;}
 .gfgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px 24px;}
 .gfrow{display:flex;align-items:center;gap:9px;background:#fff;border-radius:14px;padding:8px 12px;font-family:'Karla',sans-serif;font-size:17px;box-shadow:0 2px 10px rgba(75,46,66,.05);}
 .gfrow .txt{flex:1;min-width:0;}
-.gap{display:inline-flex;align-items:center;justify-content:center;min-width:78px;height:30px;padding:0 8px;margin-right:2px;border:2px dashed rgba(75,46,66,.3);border-radius:9px;font-weight:700;color:var(--vinho);vertical-align:middle;cursor:pointer;transition:.15s;}
+.gap{display:inline-flex;align-items:center;justify-content:center;min-width:96px;height:38px;padding:0 10px;margin-right:3px;border:2px dashed rgba(75,46,66,.3);border-radius:9px;font-weight:700;color:var(--vinho);vertical-align:middle;cursor:pointer;transition:.15s;}
 .gap.over{border-color:var(--coral);background:#FBEEE7;}
 .gap.filled{border-style:solid;border-color:var(--coral);background:#FBEEE7;}
 .gap.ok{border-color:var(--salvia);background:var(--salvia);color:#fff;}
 .gap.no{border-color:var(--erro);background:var(--erro);color:#fff;}
 
+
 /* ---------- MATCH GAME (clicável) ---------- */
 .mgame{display:grid;grid-template-columns:1fr 1fr;gap:0 34px;}
 .mcol{display:flex;flex-direction:column;gap:10px;min-width:0;}
-.mitem{display:flex;align-items:center;gap:10px;width:100%;background:#fff;border:2px solid transparent;border-radius:14px;padding:9px 14px;font-family:'Karla',sans-serif;font-size:18px;line-height:1.25;color:var(--tinta);text-align:left;cursor:pointer;box-shadow:0 2px 10px rgba(75,46,66,.05);transition:background .15s,border-color .15s,color .15s;}
+.mitem{display:flex;align-items:center;gap:10px;width:100%;background:#fff;border:2px solid transparent;border-radius:14px;padding:11px 14px;font-family:'Karla',sans-serif;font-size:18px;line-height:1.25;color:var(--tinta);text-align:left;cursor:pointer;box-shadow:0 2px 10px rgba(75,46,66,.05);transition:background .15s,border-color .15s,color .15s;}
 .mitem:hover{border-color:var(--coral);}
 .mitem.sel{border-color:var(--coral);background:#FBEEE7;}
 .mitem.done{background:var(--salvia);color:#fff;border-color:var(--salvia);cursor:default;box-shadow:none;}
@@ -166,7 +173,6 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
 .face{position:absolute;inset:0;backface-visibility:hidden;border-radius:18px;padding:14px 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 4px 14px rgba(75,46,66,.1);}
 .front{background:#fff;border-top:5px solid var(--coral);font-size:17px;line-height:1.35;color:var(--tinta);}
 .face .st{display:block;}
-.front .tap{font-family:'Kalam',cursive;font-size:13px;color:var(--coral);margin-top:8px;}
 .back{transform:rotateY(180deg);color:#fff;font-size:16px;line-height:1.35;}
 .back.ok{background:var(--salvia);}
 .back.err{background:var(--erro);}
@@ -176,7 +182,7 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
 .mcbox{background:#fff;border-radius:20px;padding:22px 26px;box-shadow:0 4px 16px rgba(75,46,66,.07);display:flex;flex-direction:column;gap:12px;}
 .mcq{font-family:'Libre Caslon Text',serif;font-weight:700;font-size:26px;color:var(--vinho);}
 .mcopts{display:flex;flex-direction:column;gap:9px;}
-.opt{display:flex;align-items:center;gap:12px;background:var(--creme);border:2px solid transparent;border-radius:14px;padding:10px 14px;font-size:19px;cursor:pointer;transition:.18s;text-align:left;font-family:'Karla',sans-serif;color:var(--tinta);}
+.opt{display:flex;align-items:center;gap:12px;background:var(--creme);border:2px solid transparent;border-radius:14px;padding:14px 16px;font-size:19px;cursor:pointer;transition:.18s;text-align:left;font-family:'Karla',sans-serif;color:var(--tinta);}
 .opt:hover{border-color:var(--coral);}
 .opt .l{flex:none;width:30px;height:30px;border-radius:50%;background:var(--coral);color:#fff;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;}
 .opt.right{background:var(--salvia);color:#fff;border-color:var(--salvia);}
@@ -185,7 +191,7 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
 .opt.wrong .l{background:rgba(255,255,255,.28);}
 .mcfb{font-size:17px;min-height:24px;font-family:'Karla',sans-serif;color:var(--vinho);}
 .mcnav{display:flex;gap:10px;align-items:center;margin-top:6px;}
-.nbtn{background:var(--vinho);color:#fff;border:none;border-radius:999px;padding:9px 20px;font-family:'Karla',sans-serif;font-weight:700;font-size:15px;cursor:pointer;}
+.nbtn{background:var(--vinho);color:#fff;border:none;border-radius:999px;padding:12px 24px;font-family:'Karla',sans-serif;font-weight:700;font-size:16px;cursor:pointer;}
 .nbtn[disabled]{opacity:.35;cursor:default;}
 .mcount{font-size:15px;color:var(--coral);font-weight:700;margin-left:auto;}
 
@@ -193,19 +199,19 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
 .scr{display:flex;flex-direction:column;gap:10px;}
 .scrrow{background:#fff;border-radius:16px;padding:12px 16px;box-shadow:0 3px 12px rgba(75,46,66,.06);}
 .chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:8px;}
-.chip{background:var(--coral);color:#fff;border:none;border-radius:999px;padding:6px 14px;font-family:'Karla',sans-serif;font-weight:600;font-size:17px;cursor:pointer;}
+.chip{background:var(--coral);color:#fff;border:none;border-radius:999px;padding:9px 20px;font-family:'Karla',sans-serif;font-weight:700;font-size:18px;cursor:pointer;box-shadow:0 3px 0 rgba(75,46,66,.18);}
 .chip:hover{background:#c87d63;}
-.drop{min-height:40px;border:2px dashed rgba(75,46,66,.28);border-radius:12px;padding:6px 10px;display:flex;flex-wrap:wrap;gap:7px;align-items:center;}
+.drop{min-height:52px;border:2px dashed rgba(75,46,66,.28);border-radius:12px;padding:7px 10px;display:flex;flex-wrap:wrap;gap:7px;align-items:center;}
 .drop .chip{background:var(--vinho);}
 .scrfoot{display:flex;align-items:center;gap:10px;margin-top:8px;}
-.sbtn{background:var(--vinho);color:#fff;border:none;border-radius:999px;padding:6px 18px;font-family:'Karla',sans-serif;font-weight:700;font-size:14px;cursor:pointer;}
+.sbtn{background:var(--vinho);color:#fff;border:none;border-radius:999px;padding:9px 22px;font-family:'Karla',sans-serif;font-weight:700;font-size:15px;cursor:pointer;}
 .sres{font-family:'Karla',sans-serif;font-weight:700;font-size:16px;}
 .sres.ok{color:var(--salvia);}
 .sres.no{color:var(--erro);}
 
 /* ---------- ERROR HUNT ---------- */
 .ehgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.eh{background:#fff;border-radius:16px;padding:16px 18px;box-shadow:0 3px 12px rgba(75,46,66,.06);cursor:pointer;border-left:5px solid var(--coral);transition:.2s;}
+.eh{background:#fff;border-radius:16px;padding:18px 20px;box-shadow:0 3px 12px rgba(75,46,66,.06);cursor:pointer;border:2px solid rgba(217,142,115,.45);border-left:5px solid var(--coral);transition:.2s;}
 .eh .s{font-size:20px;color:var(--tinta);}
 .eh .fb{font-size:16px;margin-top:8px;display:none;line-height:1.35;}
 .eh.open{color:#fff;}
@@ -223,9 +229,27 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
 .ccf{position:absolute;inset:0;backface-visibility:hidden;border-radius:18px;display:flex;align-items:center;justify-content:center;text-align:center;padding:14px;box-shadow:0 4px 14px rgba(75,46,66,.1);}
 .ccback{background:var(--vinho);color:var(--creme);flex-direction:column;}
 .ccback .e{font-size:34px;}
-.ccback .t{font-family:'Kalam',cursive;font-size:15px;margin-top:6px;opacity:.8;}
 .ccfront{background:var(--creme);border:2px solid var(--coral);transform:rotateY(180deg);font-size:18px;color:var(--vinho);font-weight:600;line-height:1.35;}
 
+
+
+/* ---------- TWO TRUTHS AND A SECRET ---------- */
+.tsay{background:#fff;border-radius:20px;box-shadow:0 6px 20px rgba(75,46,66,.1);overflow:hidden;border-top:5px solid var(--coral);}
+.tsay-h{background:var(--vinho);color:var(--creme);padding:11px 18px;font-family:'Karla',sans-serif;font-weight:700;letter-spacing:.14em;font-size:13px;}
+.tsay-b{padding:14px 18px;display:flex;flex-direction:column;gap:10px;}
+.tline{display:flex;align-items:center;gap:12px;font-family:'Karla',sans-serif;font-size:21px;color:var(--tinta);}
+.tn{flex:none;width:30px;height:30px;border-radius:50%;background:var(--coral);color:#fff;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;}
+.tsay-f{background:var(--creme);padding:10px 18px;font-family:'Karla',sans-serif;font-size:17px;color:var(--vinho);border-top:1px solid rgba(75,46,66,.08);}
+.askgrid{display:flex;flex-direction:column;gap:10px;}
+.ask{display:flex;align-items:center;gap:12px;width:100%;background:#fff;border:2px solid rgba(217,142,115,.45);border-radius:14px;padding:13px 16px;font-family:'Karla',sans-serif;font-size:19px;color:var(--tinta);text-align:left;cursor:pointer;box-shadow:0 2px 10px rgba(75,46,66,.05);transition:.15s;}
+.ask:hover{border-color:var(--coral);}
+.ask:active{transform:scale(.96);}
+.akc{flex:none;width:28px;height:28px;border-radius:50%;background:rgba(75,46,66,.09);color:var(--vinho);font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.ask.asked{background:var(--salvia);color:#fff;border-color:var(--salvia);}
+.ask.asked .akc{background:rgba(255,255,255,.3);color:#fff;}
+.askfoot{margin-top:12px;}
+.askgo{margin-top:10px;font-family:'Kalam',cursive;font-size:22px;color:var(--salvia);opacity:0;transition:opacity .3s;}
+.askgo.on{opacity:1;}
 
 /* ---------- ROTEIRO DO ROLE-PLAY ---------- */
 .guide{background:#fff;border-radius:18px;padding:14px 18px;box-shadow:0 4px 14px rgba(75,46,66,.08);border-top:5px solid var(--coral);}
@@ -240,7 +264,7 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
 .rc-b{padding:16px 18px;display:flex;flex-direction:column;gap:8px;}
 .rcline{display:flex;gap:10px;align-items:center;font-size:18px;}
 .rcline .k{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--coral);font-weight:700;width:82px;flex:none;}
-.rcphoto{width:100%;height:118px;object-fit:cover;background:#EDE3DA;}
+.rcphoto{width:100%;height:132px;background:#EBEFE6;line-height:0;}
 
 /* ---------- MISC ---------- */
 .hl{background:var(--coral);color:#fff;padding:1px 8px;border-radius:6px;font-weight:700;}
@@ -256,51 +280,8 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
 .endwrap .e1{font-size:56px;}
 .endwrap h1{font-size:56px;color:var(--creme);}
 .endwrap .e2{font-family:'Kalam',cursive;font-size:26px;color:var(--coral);}
+.reminder{display:flex;align-items:flex-start;gap:10px;margin-top:auto;background:rgba(138,155,126,.13);border:1.5px dashed var(--salvia);border-radius:14px;padding:11px 16px;font-family:'Karla',sans-serif;font-size:17px;line-height:1.35;color:var(--tinta);}
 .hw{background:rgba(217,142,115,.14);border:1.5px dashed var(--coral);border-radius:16px;padding:14px 18px;font-size:18px;line-height:1.4;}
-
-/* ---------- PROGRESSO · LEVEL UP METHOD ---------- */
-#lu-hud{position:fixed;top:12px;right:12px;z-index:70;display:flex;align-items:center;gap:14px;
-  background:#f2e6cf;border:1px solid #c9b48c;border-radius:14px;padding:7px 14px;
-  font-family:'Karla',sans-serif;color:#4B2E42;box-shadow:0 4px 14px rgba(75,46,66,.18);}
-#lu-hud .lu-hud-name{font-weight:700;font-size:13px;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:12px;border-right:1px solid rgba(201,180,140,.9);}
-#lu-hud .lu-hud-block{display:flex;flex-direction:column;align-items:center;line-height:1.05;}
-#lu-hud .lu-lab{font-size:9px;letter-spacing:.1em;color:#6b5b3e;font-weight:700;}
-#lu-hud .lu-val{font-size:17px;font-weight:700;}
-#lu-hud .lu-val-sm{font-size:13px;}
-#lu-hud .lu-coin{color:#a3720b;}
-#lu-hud .lu-hud-xp{min-width:64px;}
-#lu-hud .lu-track{width:100%;height:5px;border-radius:3px;background:#d8c8a4;overflow:hidden;margin-top:3px;}
-#lu-hud .lu-fill{height:100%;background:#8A9B7E;width:0;transition:width .6s ease;}
-#lu-hud .lu-hud-status{display:none;font-size:10px;color:#9a6a4a;max-width:96px;line-height:1.15;border-left:1px solid rgba(201,180,140,.9);padding-left:10px;}
-
-.lu-toast{position:fixed;top:64px;right:22px;z-index:80;background:#8A9B7E;color:#fff;
-  font-family:'Karla',sans-serif;font-weight:700;font-size:20px;padding:10px 20px;border-radius:999px;
-  box-shadow:0 6px 18px rgba(75,46,66,.28);animation:luRise 1.8s ease forwards;pointer-events:none;}
-@keyframes luRise{0%{opacity:0;transform:translateY(14px) scale(.9);}18%{opacity:1;transform:translateY(0) scale(1);}70%{opacity:1;transform:translateY(-4px);}100%{opacity:0;transform:translateY(-26px);}}
-
-.lu-cp{position:absolute;left:50%;transform:translateX(-50%);bottom:22px;z-index:30;display:inline-flex;align-items:center;gap:9px;
-  background:#8A9B7E;color:#fff;border:none;border-radius:999px;padding:8px 18px;cursor:pointer;
-  font-family:'Karla',sans-serif;font-weight:700;font-size:14px;box-shadow:0 4px 12px rgba(75,46,66,.22);}
-.lu-cp:hover{filter:brightness(1.07);}
-.lu-cp.done{opacity:.92;}
-.lu-cp .lu-cp-ico{font-size:12px;}
-.lu-cp .lu-cp-xp{background:rgba(255,255,255,.24);border-radius:999px;padding:2px 9px;font-size:12px;}
-.lu-cp.done{background:#EDE6DA;color:#6b5b3e;box-shadow:none;cursor:default;}
-.lu-cp.done .lu-cp-xp{background:rgba(75,46,66,.09);}
-.dark .lu-cp.done{background:rgba(250,246,241,.16);color:rgba(250,246,241,.9);}
-
-#lu-final{margin-top:20px;}
-.lu-final-card{display:flex;flex-direction:column;align-items:center;gap:12px;}
-.lu-final-line{font-family:'Karla',sans-serif;font-size:20px;color:rgba(250,246,241,.92);}
-.lu-final-line b{color:#fff;}
-.lu-finish{background:#8A9B7E;color:#fff;border:none;border-radius:999px;padding:13px 34px;cursor:pointer;
-  font-family:'Karla',sans-serif;font-weight:700;font-size:19px;box-shadow:0 5px 16px rgba(0,0,0,.22);}
-.lu-finish:hover{filter:brightness(1.07);}
-.lu-finish:disabled{opacity:.7;cursor:default;}
-.reveal a.lu-map,.lu-map{font-family:'Karla',sans-serif;font-size:15px;color:rgba(250,246,241,.72);text-decoration:none;border-bottom:1px solid rgba(250,246,241,.3);}
-.reveal a.lu-map:hover,.lu-map:hover{color:#fff;}
-.reveal a.lu-map.hero,.lu-map.hero{background:#D98E73;color:#fff;border:none;border-radius:999px;padding:13px 34px;font-size:19px;font-weight:700;box-shadow:0 5px 16px rgba(0,0,0,.22);}
-
 </style>
 </head>
 <body>
@@ -335,10 +316,10 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
     <p class="sub">Sem inglês ainda — só a gente se conhecendo 💛</p>
     <div class="body">
       <div class="qlist">
-        <div class="qitem"><div class="dot">1</div><div class="qtxt"><span class="qtag">Pessoal</span>O que você mais gosta de fazer no seu tempo livre?</div></div>
-        <div class="qitem"><div class="dot">2</div><div class="qtxt"><span class="qtag">Opinião</span>Você acha que vai ser fácil ou difícil aprender inglês? Por quê?</div></div>
-        <div class="qitem"><div class="dot">3</div><div class="qtxt"><span class="qtag">Prepara o tema</span>Se você fosse conhecer um amigo de outro país que só fala inglês, quais são as primeiras coisas que ele ia querer saber sobre você?</div></div>
-        <div class="qitem"><div class="dot">4</div><div class="qtxt"><span class="qtag">Reflexiva</span>Você já teve contato com inglês antes — filme, jogo, música, viagem? O que você lembra?</div></div>
+        <div class="qitem"><div class="dot">1</div><div class="qtxt">O que você mais gosta de fazer no seu tempo livre?</div></div>
+        <div class="qitem"><div class="dot">2</div><div class="qtxt">Você acha que vai ser fácil ou difícil aprender inglês? Por quê?</div></div>
+        <div class="qitem"><div class="dot">3</div><div class="qtxt">Se você fosse conhecer um amigo de outro país que só fala inglês, quais são as primeiras coisas que ele ia querer saber sobre você?</div></div>
+        <div class="qitem"><div class="dot">4</div><div class="qtxt">Você já teve contato com inglês antes — filme, jogo, música, viagem? O que você lembra?</div></div>
       </div>
     </div>
   </div><div class="wm">@teacher.anamiranda</div></div>
@@ -348,8 +329,8 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
 <section>
   <div class="slide light"><div class="wrap">
     <span class="badge">START · Key Vocabulary</span>
-    <h2 class="stitle">As 10 palavras da aula de hoje</h2>
-    <p class="sub">Olha, escuta e repete — entre as barras // está o som da palavra.</p>
+    <h2 class="stitle">Today's Vocabulary</h2>
+    <p class="sub">10 palavras novas. Olha, escuta e repete — entre as barras // está o som.</p>
     <div class="body">
       <div class="vocabgrid">
         <div class="vcard"><div class="vem">🏷️</div><div class="ven">name</div><div class="vpt">nome</div><div class="vph">/nêim/</div></div>
@@ -374,7 +355,7 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
     <h2 class="stitle">Match the word 🔍</h2>
     <div class="body">
       <div class="mgame sm" id="m1"></div>
-      <div class="mfoot"><button class="tbtn" style="margin-top:0;" onclick="buildMatch('m1')">Recomeçar</button><span class="mstat" id="m1-stat"></span><span class="mhint">clique na palavra, depois no significado</span></div>
+      <div class="mfoot"><button class="tbtn" style="margin-top:0;" onclick="buildMatch('m1')">Recomeçar</button><span class="mstat" id="m1-stat"></span><span class="mhint">👆 clique na palavra, depois no significado</span></div>
     </div>
   </div><div class="wm">@teacher.anamiranda</div></div>
 </section>
@@ -402,8 +383,7 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
           <div class="qitem" style="padding:10px 14px;"><div class="dot" style="width:30px;height:30px;font-size:15px;">1</div><div class="qtxt" style="font-size:17px;">Cada pergunta da Maya começa com uma palavra diferente. Consegue achar quais são?</div></div>
           <div class="qitem" style="padding:10px 14px;"><div class="dot" style="width:30px;height:30px;font-size:15px;">2</div><div class="qtxt" style="font-size:17px;">Se <i>“What's your name?”</i> pergunta o nome, o que <i>“How old are you?”</i> está perguntando?</div></div>
           <div class="qitem" style="padding:10px 14px;"><div class="dot" style="width:30px;height:30px;font-size:15px;">3</div><div class="qtxt" style="font-size:17px;">Por que <i>“Do you have any pets?”</i> começa com <b>Do</b> e não com <b>What</b> ou <b>Where</b>?</div></div>
-          <div class="qitem" style="padding:10px 14px;"><div class="dot" style="width:30px;height:30px;font-size:15px;">4</div><div class="qtxt" style="font-size:17px;">Olhando só o começo das respostas — <i>I'm… / I live…</i> — dá pra adivinhar o que cada uma responde?</div></div>
-        </div>
+          </div>
         <div class="big" style="font-size:19px;margin-top:12px;text-align:center;">Sacou o padrão? Então bora responder ela 👉</div>
       </div>
     </div>
@@ -413,7 +393,7 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
 <!-- 7. RESPONDA A MAYA -->
 <section>
   <div class="slide light"><div class="wrap">
-    <span class="badge">START · Sua vez</span>
+    <span class="badge">START · Your Turn</span>
     <h2 class="stitle">Agora responda a Maya 💬</h2>
     <div class="body" style="display:flex;gap:26px;align-items:center;">
       <div class="phone">
@@ -429,7 +409,7 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
       </div>
       <div class="side" style="justify-content:center;">
         <div class="note"><b>Primeiro tente sozinho:</b> responda cada pergunta da Maya em voz alta, com as suas informações de verdade.</div>
-        <div class="note"><b>Travou?</b> Clique no balão verde e ele te dá o começo da frase. 👀</div>
+        <div class="note"><b>Travou?</b> 👆 Clique no balão verde tracejado e ele te dá o começo da frase.</div>
         <div class="note" style="border-left-color:var(--salvia);"><b>Nível 2:</b> agora responda tudo de novo, sem clicar em nenhum balão.</div>
         <div class="big" style="font-size:19px;margin-top:6px;">Acabou de ter sua primeira conversa em inglês. 🎉</div>
       </div>
@@ -449,7 +429,7 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
         <div class="whcard"><div class="w">Where</div><div class="p">onde</div></div>
         <div class="whcard" style="background:var(--coral);"><div class="w" style="color:#fff;">Do…?</div><div class="p">pergunta de sim ou não</div></div>
       </div>
-      <p style="font-size:17px;line-height:1.4;margin:12px 0 0 0;">Elas vêm <b>sempre no começo</b> da pergunta. E a resposta é um espelho da pergunta — o <span class="blank">______</span> é você que preenche. Repare que <b>“What's your favorite…?”</b> serve pra qualquer coisa: é só trocar a última palavra. 🔁</p>
+      <p style="font-size:17px;line-height:1.4;margin:12px 0 0 0;">Elas vêm <b>sempre no começo</b> da pergunta. E a resposta é um espelho da pergunta — o <span class="blank">______</span> é você que preenche.</p>
       <div class="mirror tight">
         <div class="mline"><span class="q">What's your name?</span> → <span class="a">I'm <span class="blank">______</span>.</span><div class="mph">/uáts iór nêim/ → /áim …/</div></div>
         <div class="mline"><span class="q">How old are you?</span> → <span class="a">I'm <span class="blank">______</span> years old.</span><div class="mph">/háu ôuld ar iú/ → /áim … íers ôuld/</div></div>
@@ -462,6 +442,7 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
         <div class="mline"><span class="q">What's your favorite color?</span> → <span class="a">My favorite color is <span class="blank">______</span>.</span><div class="mph">/uáts iór fêi-vo-rit có-lor/ → /mái fêi-vo-rit có-lor is …/</div></div>
         <div class="mline"><span class="q">What's your favorite animal?</span> → <span class="a">My favorite animal is <span class="blank">______</span>.</span><div class="mph">/uáts iór fêi-vo-rit ê-ni-mal/ → /mái fêi-vo-rit ê-ni-mal is …/</div></div>
       </div>
+      <div class="reminder">🔁 <span><b>Guarde essa:</b> <i>“What's your favorite…?”</i> serve pra qualquer coisa — color, animal, food, game, movie. É só trocar a última palavra.</span></div>
     </div>
   </div><div class="wm">@teacher.anamiranda</div></div>
 </section>
@@ -482,7 +463,7 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
     <p class="sub">Clique na pergunta e depois na resposta que combina.</p>
     <div class="body">
       <div class="mgame" id="m2"></div>
-      <div class="mfoot"><button class="tbtn" style="margin-top:0;" onclick="buildMatch('m2')">Recomeçar</button><span class="mstat" id="m2-stat"></span></div>
+      <div class="mfoot"><button class="tbtn" style="margin-top:0;" onclick="buildMatch('m2')">Recomeçar</button><span class="mstat" id="m2-stat"></span><span class="mhint">👆 clique na pergunta, depois na resposta</span></div>
     </div>
   </div><div class="wm">@teacher.anamiranda</div></div>
 </section>
@@ -491,10 +472,10 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
 <section>
   <div class="slide light"><div class="wrap">
     <span class="badge">LEVEL UP · Guided Practice 1</span>
-    <h2 class="stitle">Mais um pouquinho — parte 2</h2>
+    <h2 class="stitle">Match the question to the answer — Part 2</h2>
     <div class="body">
       <div class="mgame" id="m3"></div>
-      <div class="mfoot"><button class="tbtn" style="margin-top:0;" onclick="buildMatch('m3')">Recomeçar</button><span class="mstat" id="m3-stat"></span></div>
+      <div class="mfoot"><button class="tbtn" style="margin-top:0;" onclick="buildMatch('m3')">Recomeçar</button><span class="mstat" id="m3-stat"></span><span class="mhint">👆 clique na pergunta, depois na resposta</span></div>
     </div>
   </div><div class="wm">@teacher.anamiranda</div></div>
 </section>
@@ -504,8 +485,8 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
   <div class="slide light"><div class="wrap">
     <span class="badge">LEVEL UP · Guided Practice 2</span>
     <h2 class="stitle">Gap fill: What / How / Where / Do</h2>
-    <p class="sub">Arraste a palavrinha certa para o espaço — ou clique nela e depois no espaço.</p>
     <div class="body">
+      <div class="tip">👆 <span><b>Clique</b> na palavra lá em cima e depois <b>clique</b> no espaço da frase.</span></div>
       <div class="pool" id="gf-pool"></div>
       <div class="gfgrid" id="gf-grid"></div>
       <div class="mfoot"><button class="tbtn" style="margin-top:0;" onclick="checkGap()">Conferir</button><button class="tbtn" style="margin-top:0;background:var(--vinho);" onclick="buildGap()">Recomeçar</button><span class="mstat" id="gf-stat"></span></div>
@@ -516,40 +497,41 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
 <!-- 13. TRUE OR FALSE FLIP -->
 <section>
   <div class="slide light"><div class="wrap">
-    <span class="badge">LEVEL UP · True or False About You</span>
-    <h2 class="stitle">Verdade ou mentira sobre você?</h2>
-    <p class="sub">Leia em voz alta, decida — e clique no card pra ver a correção.</p>
+    <span class="badge">LEVEL UP · Guided Practice 3</span>
+    <h2 class="stitle">True or False About You</h2>
+    <p class="sub">Leia em voz alta e decida: verdade ou mentira?</p>
+    <div class="tip">👆 <span><b>Clique</b> no card pra virar e ver a correção.</span></div>
     <div class="body">
       <div class="flipgrid">
         <label class="flip"><input type="checkbox"><span class="fcard">
-          <span class="face front"><span class="st">My name is <b>Pedro</b>.</span><span class="tap">clique pra virar</span></span>
+          <span class="face front"><span class="st">My name is <b>Pedro</b>.</span></span>
           <span class="face back err"><span class="ic">❌</span><span class="st">Se não for seu nome: <b>“No! My name is ___.”</b></span></span></span></label>
         <label class="flip"><input type="checkbox"><span class="fcard">
-          <span class="face front"><span class="st">I am <b>25</b> years old.</span><span class="tap">clique pra virar</span></span>
+          <span class="face front"><span class="st">I am <b>25</b> years old.</span></span>
           <span class="face back err"><span class="ic">❌</span><span class="st">Corrija: <b>“No! I'm ___ years old.”</b></span></span></span></label>
         <label class="flip"><input type="checkbox"><span class="fcard">
-          <span class="face front"><span class="st">I live in <b>Brazil</b>.</span><span class="tap">clique pra virar</span></span>
+          <span class="face front"><span class="st">I live in <b>Brazil</b>.</span></span>
           <span class="face back ok"><span class="ic">✅</span><span class="st"><b>“Yes! I live in Brazil.”</b></span></span></span></label>
         <label class="flip"><input type="checkbox"><span class="fcard">
-          <span class="face front"><span class="st">I <b>like</b> playing soccer.</span><span class="tap">clique pra virar</span></span>
+          <span class="face front"><span class="st">I <b>like</b> playing soccer.</span></span>
           <span class="face back ok"><span class="ic">✅</span><span class="st">Se for verdade: <b>“Yes, I like soccer!”</b> Se não: <b>“No, I don't.”</b></span></span></span></label>
         <label class="flip"><input type="checkbox"><span class="fcard">
-          <span class="face front"><span class="st">I have <b>a dog</b>.</span><span class="tap">clique pra virar</span></span>
+          <span class="face front"><span class="st">I have <b>a dog</b>.</span></span>
           <span class="face back ok"><span class="ic">✅</span><span class="st"><b>“Yes, I have a dog.”</b> ou <b>“No, I don't.”</b></span></span></span></label>
         <label class="flip"><input type="checkbox"><span class="fcard">
-          <span class="face front"><span class="st">My favorite color is <b>red</b>.</span><span class="tap">clique pra virar</span></span>
+          <span class="face front"><span class="st">My favorite color is <b>red</b>.</span></span>
           <span class="face back err"><span class="ic">❌</span><span class="st">Corrija: <b>“My favorite color is ___.”</b></span></span></span></label>
         <label class="flip"><input type="checkbox"><span class="fcard">
-          <span class="face front"><span class="st">I have <b>brothers or sisters</b>.</span><span class="tap">clique pra virar</span></span>
+          <span class="face front"><span class="st">I have <b>brothers or sisters</b>.</span></span>
           <span class="face back ok"><span class="ic">✅</span><span class="st"><b>“Yes, I have a brother/sister.”</b></span></span></span></label>
         <label class="flip"><input type="checkbox"><span class="fcard">
-          <span class="face front"><span class="st">I <b>like</b> reading books.</span><span class="tap">clique pra virar</span></span>
+          <span class="face front"><span class="st">I <b>like</b> reading books.</span></span>
           <span class="face back ok"><span class="ic">✅</span><span class="st"><b>“Yes, I like reading!”</b></span></span></span></label>
         <label class="flip"><input type="checkbox"><span class="fcard">
-          <span class="face front"><span class="st">I am from <b>Canada</b>.</span><span class="tap">clique pra virar</span></span>
+          <span class="face front"><span class="st">I am from <b>Canada</b>.</span></span>
           <span class="face back err"><span class="ic">❌</span><span class="st"><b>“No! I'm from Brazil.”</b></span></span></span></label>
         <label class="flip"><input type="checkbox"><span class="fcard">
-          <span class="face front"><span class="st">I have <b>a cat</b>.</span><span class="tap">clique pra virar</span></span>
+          <span class="face front"><span class="st">I have <b>a cat</b>.</span></span>
           <span class="face back ok"><span class="ic">✅</span><span class="st"><b>“Yes, I have a cat.”</b> ou <b>“No, I don't.”</b></span></span></span></label>
       </div>
     </div>
@@ -561,18 +543,30 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
   <div class="slide light"><div class="wrap">
     <div class="circ" style="width:300px;height:300px;background:rgba(217,142,115,.13);right:-90px;top:-80px;"></div>
     <span class="badge">🎁 Surprise Element</span>
-    <h2 class="stitle">Mystery Pet Guessing Game</h2>
-    <div class="body" style="display:flex;gap:24px;align-items:center;">
-      <div style="flex:1;">
-        <div class="big" style="margin-bottom:14px;">“I have a secret pet! Ask me questions to guess what it is!” 🐾</div>
-        <div class="note"><b>Como funciona:</b> a professora escolhe um pet secreto. O aluno só pode perguntar com <span class="hl">Do you have a…?</span></div>
-        <div class="note" style="margin-top:10px;"><b>Respostas da professora:</b> <i>“No, I don't.”</i> até acertar — aí <i>“Yes! I have a ___!”</i> 🎉</div>
-        <div class="note" style="margin-top:10px;"><b>Depois inverte:</b> o aluno escolhe o pet secreto e a professora adivinha.</div>
+    <h2 class="stitle">Two Truths and a Secret 🕵️</h2>
+    <div class="tip">👆 <span><b>Clique</b> em cada pergunta depois de fazê-la em inglês.</span></div>
+    <div class="body" style="display:flex;gap:24px;align-items:stretch;">
+      <div style="flex:none;width:470px;display:flex;flex-direction:column;">
+        <div class="tsay">
+          <div class="tsay-h">TEACHER SAYS 🗣️</div>
+          <div class="tsay-b">
+            <div class="tline"><span class="tn">1</span>I have two dogs.</div>
+            <div class="tline"><span class="tn">2</span>I'm from Rio de Janeiro.</div>
+            <div class="tline"><span class="tn">3</span>My favorite color is purple.</div>
+          </div>
+          <div class="tsay-f">Duas são <b>verdade</b>. Uma é <b>mentira</b>. Qual? 🤔</div>
+        </div>
+        <div class="note" style="margin-top:14px;border-left-color:var(--salvia);"><b>Depois inverte:</b> agora <u>você</u> inventa 2 verdades e 1 mentira sobre você — e eu é que vou investigar.</div>
       </div>
-      <div style="flex:none;width:330px;text-align:center;background:var(--vinho);border-radius:22px;padding:26px 18px;color:var(--creme);">
-        <div style="font-size:70px;">❓</div>
-        <div style="font-family:'Libre Caslon Text',serif;font-weight:700;font-size:24px;margin-top:8px;">Do you have a…?</div>
-        <div style="font-size:34px;margin-top:14px;letter-spacing:6px;">🐶 🐱 🐟 🐦 🐹 🐢</div>
+      <div class="side" style="justify-content:center;">
+        <div class="big" style="font-size:20px;margin-bottom:10px;">Nada de chutar! Investiga primeiro. 🔍</div>
+        <div class="askgrid">
+          <button class="ask" onclick="askQ(this)"><span class="akc">○</span>Do you have any pets?</button>
+          <button class="ask" onclick="askQ(this)"><span class="akc">○</span>Where are you from?</button>
+          <button class="ask" onclick="askQ(this)"><span class="akc">○</span>What's your favorite color?</button>
+        </div>
+        <div class="askfoot"><span class="mstat" id="ask-stat">0 de 3 perguntas feitas</span></div>
+        <div class="askgo" id="ask-go">🎯 Agora sim — qual das três é a mentira?</div>
       </div>
     </div>
   </div><div class="wm">@teacher.anamiranda</div></div>
@@ -595,7 +589,31 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
     <div class="body" style="display:flex;gap:26px;align-items:center;">
       <div class="rc">
         <div class="rc-h">International School · Student ID</div>
-        <img class="rcphoto" src="https://images.unsplash.com/photo-1517849845537-4d257902454a?w=960&q=80" alt="Rocky the dog">
+        <div class="rcphoto">
+          <svg viewBox="0 0 420 132" width="100%" height="100%" role="img" aria-label="Ilustração do Alex">
+            <defs><clipPath id="rcclip"><rect width="420" height="132"/></clipPath></defs>
+            <g clip-path="url(#rcclip)">
+              <rect width="420" height="132" fill="#EBEFE6"/>
+              <circle cx="58" cy="30" r="46" fill="#DDE5D6"/>
+              <circle cx="372" cy="108" r="54" fill="#DDE5D6"/>
+              <g transform="translate(330 40)">
+                <rect x="0" y="0" width="72" height="9" rx="4.5" fill="#4B2E42"/>
+                <circle cx="15" cy="14" r="5" fill="#D98E73"/><circle cx="57" cy="14" r="5" fill="#D98E73"/>
+              </g>
+              <g transform="translate(210 22)">
+                <path d="M-56 110 q0-46 56-46 t56 46 z" fill="#D98E73"/>
+                <path d="M-13 56 h26 v18 q-13 8 -26 0 z" fill="#E0A98C"/>
+                <circle cx="0" cy="34" r="30" fill="#E8B79C"/>
+                <path d="M-31 30 q3-33 31-33 t31 33 q-9-15 -31-15 t-31 15z" fill="#4B2E42"/>
+                <path d="M-32 28 q-5 13 2 21 q-6-11 -2-21z" fill="#4B2E42"/>
+                <circle cx="-10" cy="36" r="3.1" fill="#4B2E42"/>
+                <circle cx="10" cy="36" r="3.1" fill="#4B2E42"/>
+                <path d="M-8 47 q8 7 16 0" stroke="#4B2E42" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+                <path d="M0 74 v20" stroke="#C87D63" stroke-width="3" stroke-linecap="round"/>
+              </g>
+            </g>
+          </svg>
+        </div>
         <div class="rc-b">
           <div class="rcline"><span class="k">Name</span><b>Alex</b></div>
           <div class="rcline"><span class="k">Age</span>14 years old</div>
@@ -703,6 +721,7 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
   <div class="slide light"><div class="wrap">
     <span class="badge">Desafio 1 · Multiple Choice</span>
     <h2 class="stitle">Escolha a palavrinha certa</h2>
+    <div class="tip">👆 <span><b>Clique</b> na alternativa que você acha certa.</span></div>
     <div class="body" style="display:flex;align-items:center;">
       <div class="mcbox" style="width:100%;">
         <div class="mcq" id="mcq"></div>
@@ -723,7 +742,8 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
   <div class="slide light"><div class="wrap">
     <span class="badge">Desafio 2 · Sentence Scramble</span>
     <h2 class="stitle">Coloque as palavras na ordem certa</h2>
-    <p class="sub">Clique nas palavras pra montar a frase. Clicou errado? Clique de novo pra tirar.</p>
+    <p class="sub">Monte a frase na ordem certa.</p>
+    <div class="tip">👆 <span><b>Clique</b> na palavra pra descer · clique nela de novo pra tirar.</span></div>
     <div class="body">
       <div class="scr" id="scr1"></div>
     </div>
@@ -734,6 +754,7 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
   <div class="slide light"><div class="wrap">
     <span class="badge">Desafio 2 · Sentence Scramble</span>
     <h2 class="stitle">Mais duas frases pra montar</h2>
+    <div class="tip">👆 <span><b>Clique</b> na palavra pra descer · clique nela de novo pra tirar.</span></div>
     <div class="body">
       <div class="scr" id="scr2"></div>
     </div>
@@ -746,7 +767,7 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
     <span class="badge">Desafio 3 · Error Hunt</span>
     <h2 class="stitle">Caça ao erro 🕵️</h2>
     <div class="body">
-      <div class="ehhint">Duas frases estão certas, duas estão erradas. Clique em cada uma pra descobrir.</div>
+      <div class="tip">👆 <span>Duas estão certas e duas erradas. <b>Clique</b> em cada frase pra descobrir.</span></div>
       <div class="ehgrid">
         <div class="eh bad" onclick="this.classList.toggle('open')"><div class="s">How old you are?</div><div class="fb">❌ O certo é <b>“How old are you?”</b> — em pergunta, o <i>are</i> vem antes do <i>you</i>.</div></div>
         <div class="eh good" onclick="this.classList.toggle('open')"><div class="s">Where do you live?</div><div class="fb">✅ Perfeita! Wh- word + do + you + verbo.</div></div>
@@ -762,25 +783,26 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
   <div class="slide light"><div class="wrap">
     <span class="badge">Desafio 4 · Conversation Cards</span>
     <h2 class="stitle">Vire um card e responda em inglês 🗣️</h2>
+    <div class="tip">👆 <span><b>Clique</b> num card pra revelar a pergunta — aí responde em voz alta.</span></div>
     <div class="body">
       <div class="ccgrid">
         <div class="cc" onclick="this.classList.toggle('open')"><div class="ccin">
-          <div class="ccf ccback"><div><div class="e">🏷️</div><div class="t">clique</div></div></div>
+          <div class="ccf ccback"><div><div class="e">🏷️</div></div></div>
           <div class="ccf ccfront">What's your name?</div></div></div>
         <div class="cc" onclick="this.classList.toggle('open')"><div class="ccin">
-          <div class="ccf ccback"><div><div class="e">🎂</div><div class="t">clique</div></div></div>
+          <div class="ccf ccback"><div><div class="e">🎂</div></div></div>
           <div class="ccf ccfront">How old are you?</div></div></div>
         <div class="cc" onclick="this.classList.toggle('open')"><div class="ccin">
-          <div class="ccf ccback"><div><div class="e">🏠</div><div class="t">clique</div></div></div>
+          <div class="ccf ccback"><div><div class="e">🏠</div></div></div>
           <div class="ccf ccfront">Where do you live?</div></div></div>
         <div class="cc" onclick="this.classList.toggle('open')"><div class="ccin">
-          <div class="ccf ccback"><div><div class="e">🐶</div><div class="t">clique</div></div></div>
+          <div class="ccf ccback"><div><div class="e">🐶</div></div></div>
           <div class="ccf ccfront">Do you have any pets?</div></div></div>
         <div class="cc" onclick="this.classList.toggle('open')"><div class="ccin">
-          <div class="ccf ccback"><div><div class="e">🎮</div><div class="t">clique</div></div></div>
+          <div class="ccf ccback"><div><div class="e">🎮</div></div></div>
           <div class="ccf ccfront">What do you like to do?</div></div></div>
         <div class="cc" onclick="this.classList.toggle('open')"><div class="ccin">
-          <div class="ccf ccback"><div><div class="e">🎨</div><div class="t">clique</div></div></div>
+          <div class="ccf ccback"><div><div class="e">🎨</div></div></div>
           <div class="ccf ccfront">What's your favorite color?</div></div></div>
       </div>
     </div>
@@ -795,7 +817,7 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
     <div class="e1">🎉</div>
     <h1>Great job today!</h1>
     <div class="e2">Você acabou de destravar sua primeira conversa em inglês.</div>
-    <div id="lu-final"></div>
+    <div style="margin-top:22px;"><span class="capa-pill" style="background:var(--coral);">AULA 01 COMPLETA · +XP</span></div>
     <div style="font-family:'Karla',sans-serif;font-size:22px;color:rgba(250,246,241,.85);margin-top:18px;">See you next class! 👋</div>
   </div><div class="wm">@teacher.anamiranda</div></div>
 </section>
@@ -930,6 +952,21 @@ function checkGap(){
     out.className = 'mstat';
     out.textContent = right + ' de ' + gaps.length + ' certas — clique no espaço errado pra trocar';
   }
+}
+
+/* ---------- TWO TRUTHS AND A SECRET ---------- */
+function askQ(el){
+  el.classList.toggle('asked');
+  el.querySelector('.akc').textContent = el.classList.contains('asked') ? '✓' : '○';
+  var all = document.querySelectorAll('.askgrid .ask');
+  var n = document.querySelectorAll('.askgrid .ask.asked').length;
+  var out = document.getElementById('ask-stat');
+  var go = document.getElementById('ask-go');
+  if(out){
+    out.className = (n === all.length) ? 'mstat win' : 'mstat';
+    out.textContent = n + ' de ' + all.length + ' perguntas feitas';
+  }
+  if(go) go.classList.toggle('on', n === all.length);
 }
 
 /* ---------- MATCH GAME (clicável) ---------- */
@@ -1178,260 +1215,6 @@ Reveal.on('ready', () => {
   buildMatch('m3');
   buildGap();
 });
-</script>
-<script type="module">
-
-/* ============================================================
-   LEVEL UP METHOD — MÓDULO DE PROGRESSO (XP + desbloqueio)
-   Etapa 1 · Aula 1
-   Lê ?aluno=<id> da URL e grava em Firestore (coleção "alunos").
-   Sem ?aluno= o módulo entra em MODO DEMO: tudo funciona na tela,
-   nada é gravado.
-   ============================================================ */
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, getDoc, updateDoc, arrayUnion, increment, serverTimestamp }
-  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAqczo4JjxOm_RvN4SH6Mo3eTe6cDRqLiI",
-  authDomain: "level-up-method.firebaseapp.com",
-  projectId: "level-up-method",
-  storageBucket: "level-up-method.firebasestorage.app",
-  messagingSenderId: "69672690105",
-  appId: "1:69672690105:web:d7d23b3b8f8ea7e3e6d668"
-};
-
-const ETAPA = 1;
-const AULA  = 1;
-const XP_PER_LEVEL = 100;          // igual ao mapa: 1 aula completa = 1 nível
-const MAPA_URL = "../etapa1.html";
-
-/* Checkpoints: em que slide (número que aparece no rodapé) aparece cada
-   botão, quanto XP vale e o id gravado no Firestore.
-   Para trocar de lugar, é só mudar o "slide". */
-const CHECKPOINTS = [{"slide": 9, "id": "start", "label": "Concluir START", "xp": 20}, {"slide": 15, "id": "levelup", "label": "Concluir LEVEL UP", "xp": 40}, {"slide": 21, "id": "unlock", "label": "Concluir UNLOCK", "xp": 40}];
-
-const FINAL_SLIDE = 27;  // slide "Great job today!"
-const XP_AULA = CHECKPOINTS.reduce((s, c) => s + (c.xp || 0), 0);
-const COINS_AULA = 10;   // bônus de moedas por concluir a aula inteira
-
-/* ---------- estado ---------- */
-const alunoId = new URLSearchParams(location.search).get("aluno");
-const DEMO = !alunoId;
-let st = { nome: "", xp: 0, coins: 0, noAtual: 1, nosCompletos: [], checkpoints: [] };
-let ref = null, online = false, busy = false;
-
-/* ---------- boot ---------- */
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-if (Reveal.isReady()) start(); else Reveal.on("ready", start);
-
-async function start() {
-  buildHud();
-  buildButtons();
-  buildFinal();
-  if (DEMO) { setHudStatus("modo demo · nada é salvo"); paint(); return; }
-  try {
-    ref = doc(db, "alunos", alunoId);
-    const snap = await getDoc(ref);
-    if (!snap.exists()) { setHudStatus("aluno não encontrado"); paint(); return; }
-    const d = snap.data();
-    st = {
-      nome: d.nome || "",
-      xp: d.xp || 0,
-      coins: d.coins || 0,
-      noAtual: d.noAtual || 1,
-      nosCompletos: d.nosCompletos || [],
-      checkpoints: d.checkpoints || []
-    };
-    online = true;
-    setHudStatus("");
-    paint();
-    refreshDone();
-  } catch (e) {
-    setHudStatus("offline · progresso não salvo");
-    paint();
-  }
-}
-
-/* ---------- HUD fixo ---------- */
-function buildHud() {
-  const el = document.createElement("div");
-  el.id = "lu-hud";
-  el.innerHTML =
-    '<div class="lu-hud-name" id="lu-name">Aula 1</div>' +
-    '<div class="lu-hud-block"><span class="lu-lab">LEVEL</span><span class="lu-val" id="lu-level">1</span></div>' +
-    '<div class="lu-hud-block lu-hud-xp"><span class="lu-lab">XP</span>' +
-      '<span class="lu-val lu-val-sm" id="lu-xp">0/100</span>' +
-      '<div class="lu-track"><div class="lu-fill" id="lu-fill"></div></div></div>' +
-    '<div class="lu-hud-block"><span class="lu-lab">COINS</span><span class="lu-val lu-coin" id="lu-coins">0</span></div>' +
-    '<div class="lu-hud-status" id="lu-status"></div>';
-  document.body.appendChild(el);
-}
-function setHudStatus(txt) {
-  const s = document.getElementById("lu-status");
-  s.textContent = txt;
-  s.style.display = txt ? "block" : "none";
-}
-function paint(gain) {
-  const level = Math.floor(st.xp / XP_PER_LEVEL) + 1;
-  const inLvl = st.xp % XP_PER_LEVEL;
-  document.getElementById("lu-name").textContent = st.nome || "Aula 1";
-  document.getElementById("lu-level").textContent = level;
-  document.getElementById("lu-xp").textContent = inLvl + "/" + XP_PER_LEVEL;
-  document.getElementById("lu-fill").style.width = Math.round(inLvl / XP_PER_LEVEL * 100) + "%";
-  document.getElementById("lu-coins").textContent = st.coins;
-  if (gain) toast(gain);
-}
-function toast(txt) {
-  const t = document.createElement("div");
-  t.className = "lu-toast";
-  t.textContent = txt;
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), 1800);
-}
-
-/* ---------- botões de checkpoint ---------- */
-function slideEl(n) {
-  const secs = document.querySelectorAll(".reveal .slides > section");
-  const sec = secs[n - 1];
-  return sec ? (sec.querySelector(".slide, .imgslide") || sec) : null;
-}
-function buildButtons() {
-  CHECKPOINTS.forEach(cp => {
-    const host = slideEl(cp.slide);
-    if (!host) return;
-    const b = document.createElement("button");
-    b.className = "lu-cp";
-    b.id = "lu-cp-" + cp.id;
-    b.innerHTML = '<span class="lu-cp-ico">▶</span><span>' + cp.label + '</span><span class="lu-cp-xp">' + rewardLabel(cp) + '</span>';
-    b.onclick = () => award(cp);
-    host.appendChild(b);
-  });
-}
-function rewardLabel(cp) {
-  const p = [];
-  if (cp.xp) p.push("+" + cp.xp + " XP");
-  if (cp.coins) p.push("+" + cp.coins + " 🪙");
-  return p.join(" ");
-}
-function cpKey(cp) { return "e" + ETAPA + "a" + AULA + "-" + cp.id; }
-function markDone(cp) {
-  const b = document.getElementById("lu-cp-" + cp.id);
-  if (!b) return;
-  b.classList.add("done");
-  b.querySelector(".lu-cp-ico").textContent = "✓";
-  b.disabled = true;
-}
-function refreshDone() {
-  CHECKPOINTS.forEach(cp => { if (st.checkpoints.includes(cpKey(cp))) markDone(cp); });
-  if (st.nosCompletos.includes(AULA)) finalDone();
-}
-
-async function award(cp) {
-  if (busy) return;
-  const key = cpKey(cp);
-  if (st.checkpoints.includes(key)) return;
-  busy = true;
-  st.checkpoints.push(key);
-  st.xp += cp.xp || 0;
-  st.coins += cp.coins || 0;
-  markDone(cp);
-  paint(rewardLabel(cp));
-  if (online) {
-    try {
-      const patch = { checkpoints: arrayUnion(key), ultimaAtividade: serverTimestamp() };
-      if (cp.xp) patch.xp = increment(cp.xp);
-      if (cp.coins) patch.coins = increment(cp.coins);
-      await updateDoc(ref, patch);
-    } catch (e) { setHudStatus("offline · progresso não salvo"); online = false; }
-  }
-  busy = false;
-  updateFinalGain();
-}
-
-/* ---------- painel final ---------- */
-function buildFinal() {
-  let host = document.getElementById("lu-final");
-  if (!host) {
-    const s = slideEl(FINAL_SLIDE);
-    if (!s) return;
-    host = document.createElement("div");
-    host.id = "lu-final";
-    (s.querySelector(".wrap") || s).appendChild(host);
-  }
-  host.innerHTML =
-    '<div class="lu-final-card">' +
-      '<div class="lu-final-line" id="lu-final-line">Você ganhou <b id="lu-gain">0</b> de <b>' + XP_AULA + ' XP</b> nesta aula · finalizar ainda dá <b>+' + COINS_AULA + ' 🪙</b></div>' +
-      '<button id="lu-finish" class="lu-finish">✅ Finalizar a Aula 1</button>' +
-      '<a id="lu-map" class="lu-map" href="#" hidden>🗺️ Voltar ao mapa</a>' +
-    '</div>';
-  document.getElementById("lu-map").href = MAPA_URL + (alunoId ? "?aluno=" + encodeURIComponent(alunoId) : "");
-  document.getElementById("lu-finish").onclick = finish;
-  updateFinalGain();
-}
-function updateFinalGain() {
-  const g = document.getElementById("lu-gain");
-  if (!g) return;
-  let got = 0;
-  CHECKPOINTS.forEach(cp => { if (st.checkpoints.includes(cpKey(cp))) got += cp.xp || 0; });
-  g.textContent = got;
-}
-async function finish() {
-  if (busy) return;
-  busy = true;
-  const btn = document.getElementById("lu-finish");
-  btn.disabled = true;
-  btn.textContent = "Salvando…";
-
-  /* credita o que ficou pendente */
-  const faltando = CHECKPOINTS.filter(cp => !st.checkpoints.includes(cpKey(cp)));
-  let xpExtra = 0, coinsExtra = 0;
-  const keys = [];
-  faltando.forEach(cp => {
-    xpExtra += cp.xp || 0; coinsExtra += cp.coins || 0;
-    keys.push(cpKey(cp)); st.checkpoints.push(cpKey(cp)); markDone(cp);
-  });
-  const jaConcluida = st.nosCompletos.includes(AULA);
-  if (!jaConcluida) coinsExtra += COINS_AULA;
-  st.xp += xpExtra; st.coins += coinsExtra;
-  if (!jaConcluida) st.nosCompletos.push(AULA);
-  const proximo = Math.max(st.noAtual, AULA + 1);
-  st.noAtual = proximo;
-  paint(xpExtra ? "+" + xpExtra + " XP" : (coinsExtra ? "+" + coinsExtra + " \ud83e\ude99" : null));
-  updateFinalGain();
-
-  if (online) {
-    try {
-      const patch = { noAtual: proximo, nosCompletos: arrayUnion(AULA), ultimaAtividade: serverTimestamp() };
-      if (keys.length) patch.checkpoints = arrayUnion(...keys);
-      if (xpExtra) patch.xp = increment(xpExtra);
-      if (coinsExtra) patch.coins = increment(coinsExtra);
-      await updateDoc(ref, patch);
-    } catch (e) {
-      setHudStatus("offline · progresso não salvo");
-      online = false;
-      btn.disabled = false;
-      btn.textContent = "⚠️ Não salvou — tentar de novo";
-      const m = document.getElementById("lu-map");
-      if (m) m.hidden = false;
-      busy = false;
-      return;
-    }
-  }
-  finalDone();
-  busy = false;
-}
-function finalDone() {
-  const line = document.getElementById("lu-final-line");
-  const btn = document.getElementById("lu-finish");
-  const map = document.getElementById("lu-map");
-  if (line) line.innerHTML = 'Aula 1 completa! <b>Nó ' + (AULA + 1) + ' desbloqueado</b> 🔓';
-  if (btn) btn.remove();
-  if (map) { map.hidden = false; map.classList.add("hero"); }
-}
-
 </script>
 </body>
 </html>
