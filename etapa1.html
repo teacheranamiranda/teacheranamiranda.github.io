@@ -139,7 +139,7 @@
      alteração, trocar este valor (data AAAAMMDD, com -2, -3… se mudar mais de
      uma vez no mesmo dia). Sem isso o navegador do aluno continua abrindo a
      versão antiga que ele já baixou. */
-  const VERSAO_AULAS = "20260916-2";
+  const VERSAO_AULAS = "20260916-3";
 
   const urlDe = (p, alunoId) => (p.prova ? "aulas/etapa1-prova.html" : "aulas/etapa1-aula" + p.n + ".html")
     + "?aluno=" + encodeURIComponent(alunoId) + "&v=" + VERSAO_AULAS;
