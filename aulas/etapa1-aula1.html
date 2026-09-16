@@ -328,6 +328,42 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
 .reveal a.lu-map:hover,.lu-map:hover{color:#fff;}
 .reveal a.lu-map.hero,.lu-map.hero{background:#D98E73;color:#fff;border:none;border-radius:999px;padding:13px 34px;font-size:19px;font-weight:700;box-shadow:0 5px 16px rgba(0,0,0,.22);}
 
+
+/* ---------- HOMEWORK DE ÁUDIO · LEVEL UP METHOD ---------- */
+.hw-wrap{display:flex;gap:26px;height:100%;}
+.hw-left{flex:1.05;display:flex;flex-direction:column;gap:12px;min-width:0;}
+.hw-right{flex:.95;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:#fff;border-radius:20px;padding:20px 24px;box-shadow:0 4px 16px rgba(75,46,66,.08);}
+.hw-q{display:flex;gap:12px;align-items:flex-start;background:#fff;border-radius:16px;padding:12px 16px;
+  box-shadow:0 3px 12px rgba(75,46,66,.06);border-left:4px solid var(--coral);}
+.hw-q .n{flex:none;width:28px;height:28px;border-radius:50%;background:var(--coral);color:#fff;
+  font-family:'Karla',sans-serif;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;}
+.hw-q .t{font-size:18px;line-height:1.35;}
+.hw-q .ph{font-family:'Kalam',cursive;font-size:14px;color:var(--vinho);opacity:.7;margin-top:2px;}
+
+.hw-mic{width:96px;height:96px;border-radius:50%;border:none;cursor:pointer;background:var(--coral);
+  color:#fff;font-size:40px;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 6px 18px rgba(217,142,115,.45);transition:transform .15s ease;}
+.hw-mic:hover{transform:scale(1.05);}
+.hw-mic.rec{background:var(--erro);animation:hwPulse 1.3s infinite;}
+.hw-mic:disabled{opacity:.5;cursor:default;transform:none;}
+@keyframes hwPulse{0%,100%{box-shadow:0 0 0 0 rgba(193,92,74,.55);}50%{box-shadow:0 0 0 18px rgba(193,92,74,0);}}
+
+.hw-time{font-family:'Karla',sans-serif;font-weight:700;font-size:26px;color:var(--vinho);margin-top:10px;}
+.hw-bar{width:80%;height:6px;border-radius:3px;background:#EDE6DA;overflow:hidden;margin-top:6px;}
+.hw-bar i{display:block;height:100%;width:0;background:var(--coral);transition:width .25s linear;}
+.hw-hint{font-family:'Karla',sans-serif;font-size:14px;color:rgba(58,38,50,.6);margin-top:10px;text-align:center;line-height:1.35;min-height:38px;}
+.hw-actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;justify-content:center;}
+.hw-btn{border:none;border-radius:999px;padding:10px 20px;cursor:pointer;font-family:'Karla',sans-serif;
+  font-weight:700;font-size:15px;background:#EDE6DA;color:#6b5b3e;}
+.hw-btn.go{background:var(--salvia);color:#fff;box-shadow:0 4px 12px rgba(138,155,126,.4);}
+.hw-btn:disabled{opacity:.45;cursor:default;}
+.hw-audio{width:100%;margin-top:12px;}
+.hw-ok{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;}
+.hw-ok .big{font-size:46px;}
+.hw-ok .msg{font-family:'Libre Caslon Text',serif;font-weight:700;font-size:22px;color:var(--vinho);}
+.hw-ok .sub{font-family:'Karla',sans-serif;font-size:15px;color:rgba(58,38,50,.65);}
+
 </style>
 </head>
 <body>
@@ -857,6 +893,26 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
 
 <!-- 26. FECHAMENTO -->
 <section>
+  <div class="slide light"><div class="wrap">
+    <span class="badge">🎤 Homework · Missão bônus</span>
+    <h2 class="stitle">Grave a sua apresentação</h2>
+    <p class="sub">Enviar vale +20 XP e +5 🪙</p>
+    <div class="body">
+      <div class="hw-wrap">
+        <div class="hw-left">
+          <p style="font-size:17px;line-height:1.4;margin:0 0 4px 0;">Imagina que a Maya te mandou um áudio no app. Responde ela em inglês, tudo de uma vez.</p>
+          <div class="hw-q"><div class="n">1</div><div><div class="t">What's your name?</div><div class="ph">/uáts iór nêim/</div></div></div>
+<div class="hw-q"><div class="n">2</div><div><div class="t">How old are you?</div><div class="ph">/háu ôuld ar iú/</div></div></div>
+<div class="hw-q"><div class="n">3</div><div><div class="t">Where do you live?</div><div class="ph">/uér du iú lív/</div></div></div>
+<div class="hw-q"><div class="n">4</div><div><div class="t">What's your favorite color?</div><div class="ph">/uáts iór fêi-vo-rit có-lor/</div></div></div>
+
+        </div>
+        <div class="hw-right" id="hw-box"></div>
+      </div>
+    </div>
+  </div><div class="wm">@teacher.anamiranda</div></div>
+</section>
+<section>
   <div class="slide dark"><div class="wrap endwrap">
     <div class="circ" style="width:360px;height:360px;background:rgba(217,142,115,.13);left:-130px;top:-120px;"></div>
     <div class="circ" style="width:260px;height:260px;background:rgba(217,142,115,.1);right:-90px;bottom:-100px;"></div>
@@ -1272,7 +1328,7 @@ Reveal.on('ready', () => {
    nada é gravado.
    ============================================================ */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, getDoc, updateDoc, arrayUnion, increment, serverTimestamp }
+import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion, increment, serverTimestamp }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -1294,7 +1350,7 @@ const MAPA_URL = "../etapa1.html";
    Para trocar de lugar, é só mudar o "slide". */
 const CHECKPOINTS = [{"slide": 9, "id": "start", "label": "Complete START", "xp": 20}, {"slide": 15, "id": "levelup", "label": "Complete LEVEL UP", "xp": 40}, {"slide": 21, "id": "unlock", "label": "Complete UNLOCK", "xp": 40}];
 
-const FINAL_SLIDE = 27;  // slide "Great job today!"
+const FINAL_SLIDE = 28;  // slide "Great job today!"
 const XP_AULA = CHECKPOINTS.reduce((s, c) => s + (c.xp || 0), 0);
 const COINS_AULA = 10;   // bônus de moedas por concluir a aula inteira
 
@@ -1308,12 +1364,12 @@ let ref = null, online = false, busy = false;
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-if (Reveal.isReady()) start(); else Reveal.on("ready", start);
 
 async function start() {
   buildHud();
   buildButtons();
   buildFinal();
+  hwInit();
   if (DEMO) { setHudStatus("modo demo · nada é salvo"); paint(); return; }
   try {
     ref = doc(db, "alunos", alunoId);
@@ -1515,6 +1571,224 @@ function finalDone() {
   if (map) { map.hidden = false; map.classList.add("hero"); }
 }
 
+const HW_TAREFA = "Se apresentar em inglês: nome, idade, onde mora e uma coisa que gosta";
+
+/* ============================================================
+   LEVEL UP METHOD — HOMEWORK DE ÁUDIO
+   Grava até MAX_SEG segundos no navegador e salva o áudio dentro
+   do Firestore (coleção "gravacoes"), em base64. Enviar conta
+   como missão bônus: dá XP e coins extras uma única vez.
+   Depende do módulo de progresso (usa st, ref, online, paint...).
+   ============================================================ */
+const HW_MAX_SEG = 60;
+const HW_XP = 20;          // missão bônus
+const HW_COINS = 5;
+const HW_MAX_BYTES = 700000;   // teto seguro: doc do Firestore vai até 1 MB
+
+const HW_BOX_HTML =
+  '<button class="hw-mic" id="hw-mic">🎤</button>' +
+  '<div class="hw-time" id="hw-time">0:00</div>' +
+  '<div class="hw-bar"><i id="hw-fill"></i></div>' +
+  '<div class="hw-hint" id="hw-hint"></div>' +
+  '<audio class="hw-audio" id="hw-player" hidden></audio>' +
+  '<div class="hw-actions">' +
+    '<button class="hw-btn" id="hw-again" hidden>Regravar</button>' +
+    '<button class="hw-btn go" id="hw-send" disabled>Enviar</button>' +
+  '</div>';
+
+let hwRec = null, hwChunks = [], hwBlob = null, hwT0 = 0, hwTimer = null, hwBusy = false;
+
+function hwEl(id){ return document.getElementById(id); }
+
+function hwInit(){
+  const host = hwEl("hw-box");
+  if (!host) return;
+  if (!hwEl("hw-mic")) host.innerHTML = HW_BOX_HTML;
+  hwEl("hw-mic").onclick = hwToggle;
+  hwEl("hw-send").onclick = hwSend;
+  hwEl("hw-again").onclick = hwReset;
+  hwReset();
+  hwCarregarExistente();
+}
+
+function hwSetHint(t){ const h = hwEl("hw-hint"); if (h) h.innerHTML = t; }
+
+function hwReset(){
+  hwBlob = null; hwChunks = [];
+  const a = hwEl("hw-player"); if (a) { a.hidden = true; a.removeAttribute("src"); }
+  hwEl("hw-send").disabled = true;
+  hwEl("hw-again").hidden = true;
+  hwEl("hw-mic").disabled = false;
+  hwEl("hw-mic").classList.remove("rec");
+  hwEl("hw-mic").textContent = "🎤";
+  hwEl("hw-time").textContent = "0:00";
+  hwEl("hw-fill").style.width = "0%";
+  hwSetHint("Clique no microfone e responda em inglês.<br>Você tem até " + HW_MAX_SEG + " segundos.");
+}
+
+async function hwToggle(){
+  if (hwRec && hwRec.state === "recording") { hwStop(); return; }
+  let stream;
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  } catch (e) {
+    hwSetHint("Não consegui acessar o microfone. Clique no cadeado ao lado do endereço e permita o microfone para este site.");
+    return;
+  }
+  let mime = "";
+  ["audio/webm;codecs=opus", "audio/webm", "audio/mp4"].forEach(m => {
+    if (!mime && window.MediaRecorder && MediaRecorder.isTypeSupported(m)) mime = m;
+  });
+  try {
+    hwRec = new MediaRecorder(stream, mime ? { mimeType: mime, audioBitsPerSecond: 24000 } : { audioBitsPerSecond: 24000 });
+  } catch (e) {
+    hwRec = new MediaRecorder(stream);
+  }
+  hwChunks = [];
+  hwRec.ondataavailable = ev => { if (ev.data && ev.data.size) hwChunks.push(ev.data); };
+  hwRec.onstop = () => {
+    stream.getTracks().forEach(t => t.stop());
+    hwBlob = new Blob(hwChunks, { type: hwRec.mimeType || "audio/webm" });
+    const a = hwEl("hw-player");
+    a.src = URL.createObjectURL(hwBlob);
+    a.hidden = false;
+    a.controls = true;
+    hwEl("hw-again").hidden = false;
+    if (hwBlob.size > HW_MAX_BYTES) {
+      hwEl("hw-send").disabled = true;
+      hwSetHint("Essa gravação ficou grande demais para salvar. Grave uma resposta mais curta.");
+    } else {
+      hwEl("hw-send").disabled = false;
+      hwSetHint("Ouça antes de enviar. Se gostou, clique em <b>Enviar</b>.");
+    }
+  };
+  hwRec.start();
+  hwT0 = Date.now();
+  hwEl("hw-mic").classList.add("rec");
+  hwEl("hw-mic").textContent = "⏹";
+  hwEl("hw-send").disabled = true;
+  hwEl("hw-again").hidden = true;
+  hwSetHint("Gravando… clique de novo para parar.");
+  hwTimer = setInterval(hwTick, 200);
+}
+
+function hwTick(){
+  const s = (Date.now() - hwT0) / 1000;
+  const m = Math.floor(s / 60), r = Math.floor(s % 60);
+  hwEl("hw-time").textContent = m + ":" + (r < 10 ? "0" : "") + r;
+  hwEl("hw-fill").style.width = Math.min(100, s / HW_MAX_SEG * 100) + "%";
+  if (s >= HW_MAX_SEG) hwStop();
+}
+
+function hwStop(){
+  if (hwTimer) { clearInterval(hwTimer); hwTimer = null; }
+  if (hwRec && hwRec.state === "recording") hwRec.stop();
+  hwEl("hw-mic").classList.remove("rec");
+  hwEl("hw-mic").textContent = "🎤";
+}
+
+function hwBlobParaBase64(blob){
+  return new Promise((ok, err) => {
+    const r = new FileReader();
+    r.onerror = err;
+    r.onload = () => ok(String(r.result).split(",")[1]);
+    r.readAsDataURL(blob);
+  });
+}
+
+function hwDocId(){ return alunoId + "__e" + ETAPA + "a" + AULA; }
+
+async function hwSend(){
+  if (!hwBlob || hwBusy) return;
+  if (DEMO) {
+    hwFeito("Modo demo — nada foi salvo.");
+    return;
+  }
+  if (!online) {
+    hwSetHint("Sem conexão com o servidor agora. Tente de novo em instantes.");
+    return;
+  }
+  hwBusy = true;
+  const btn = hwEl("hw-send");
+  btn.disabled = true; btn.textContent = "Enviando…";
+  try {
+    const b64 = await hwBlobParaBase64(hwBlob);
+    const dur = Math.round((Date.now() - hwT0) / 1000);
+    await setDoc(doc(db, "gravacoes", hwDocId()), {
+      aluno: alunoId,
+      nome: st.nome || "",
+      etapa: ETAPA,
+      aula: AULA,
+      tarefa: HW_TAREFA,
+      mime: hwBlob.type || "audio/webm",
+      bytes: hwBlob.size,
+      duracao: dur,
+      audio: b64,
+      criadoEm: serverTimestamp()
+    });
+  } catch (e) {
+    hwBusy = false;
+    btn.disabled = false; btn.textContent = "Enviar";
+    hwSetHint("Não consegui salvar agora. Tente de novo em instantes.");
+    return;
+  }
+
+  /* missão bônus — só credita na primeira vez */
+  const key = "e" + ETAPA + "a" + AULA + "-homework";
+  if (!st.checkpoints.includes(key)) {
+    st.checkpoints.push(key);
+    st.xp += HW_XP; st.coins += HW_COINS;
+    paint("+" + HW_XP + " XP");
+    try {
+      await updateDoc(ref, {
+        checkpoints: arrayUnion(key),
+        xp: increment(HW_XP),
+        coins: increment(HW_COINS),
+        ultimaAtividade: serverTimestamp()
+      });
+    } catch (e) { /* o áudio já está salvo; o XP tenta de novo numa próxima */ }
+  }
+  hwBusy = false;
+  hwFeito();
+}
+
+function hwFeito(msgExtra){
+  const box = hwEl("hw-box");
+  if (!box) return;
+  box.innerHTML =
+    '<div class="hw-ok">' +
+      '<div class="big">🎉</div>' +
+      '<div class="msg">Homework enviada!</div>' +
+      '<div class="sub">' + (msgExtra || "A Teacher Ana já consegue ouvir a sua gravação.") + '</div>' +
+      '<button class="hw-btn" id="hw-regravar" style="margin-top:6px;">Gravar de novo</button>' +
+    '</div>';
+  const r = hwEl("hw-regravar");
+  if (r) r.onclick = () => { box.innerHTML = HW_BOX_HTML; hwInit(); };
+}
+
+/* se o aluno já enviou antes, mostra o que ele gravou */
+async function hwCarregarExistente(){
+  if (DEMO || !online) return;
+  try {
+    const snap = await getDoc(doc(db, "gravacoes", hwDocId()));
+    if (!snap.exists()) return;
+    const d = snap.data();
+    const box = hwEl("hw-box");
+    box.innerHTML =
+      '<div class="hw-ok">' +
+        '<div class="big">✅</div>' +
+        '<div class="msg">Você já enviou esta homework</div>' +
+        '<div class="sub">Ouça abaixo — ou grave de novo se quiser melhorar.</div>' +
+        '<audio class="hw-audio" controls src="data:' + (d.mime || "audio/webm") + ';base64,' + d.audio + '"></audio>' +
+        '<button class="hw-btn" id="hw-regravar" style="margin-top:6px;">Gravar de novo</button>' +
+      '</div>';
+    hwEl("hw-regravar").onclick = () => { box.innerHTML = HW_BOX_HTML; hwInit(); };
+  } catch (e) { /* silencioso: se falhar, o aluno só grava de novo */ }
+}
+
+
+/* boot do modulo, depois de tudo declarado */
+if (Reveal.isReady()) start(); else Reveal.on("ready", start);
 </script>
 </body>
 </html>
