@@ -124,8 +124,13 @@
     { n: 11, xPct: 10.42, yPct: 64.65, prova: true }
   ];
 
+  /* Versão das aulas — anti-cache. SEMPRE que uma aula for republicada com
+     alteração, trocar esta data (formato AAAAMMDD). Sem isso o navegador do
+     aluno continua abrindo a versão antiga que ele já baixou. */
+  const VERSAO_AULAS = "20260916";
+
   const urlDe = (p, alunoId) => (p.prova ? "aulas/etapa1-prova.html" : "aulas/etapa1-aula" + p.n + ".html")
-    + "?aluno=" + encodeURIComponent(alunoId);
+    + "?aluno=" + encodeURIComponent(alunoId) + "&v=" + VERSAO_AULAS;
 
   async function render() {
     const params = new URLSearchParams(window.location.search);
