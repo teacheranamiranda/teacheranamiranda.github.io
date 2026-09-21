@@ -478,6 +478,30 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
   font-family:'Karla',sans-serif;font-weight:700;font-size:16px;box-shadow:0 5px 16px rgba(75,46,66,.3);}
 #lu-quest:hover{filter:brightness(1.07);}
 #lu-quest:active{transform:scale(.96);}
+
+/* ---------- ESCRITA NO SLIDE (aluno digita) ---------- */
+.tapgrid .vcard.tap{cursor:pointer;transition:.12s;border-top-color:var(--coral);}
+.tapgrid .vcard.tap:hover{box-shadow:0 5px 16px rgba(75,46,66,.14);}
+.tapgrid .vcard.tap:active{transform:scale(.96);}
+.tapgrid .vcard.tap.used{background:var(--salvia);border-top-color:var(--salvia);}
+.tapgrid .vcard.tap.used .ven,.tapgrid .vcard.tap.used .vpt,.tapgrid .vcard.tap.used .vph{color:#fff;opacity:1;}
+.wgrid{display:flex;flex-direction:column;gap:10px;margin-top:16px;}
+.wline{display:flex;align-items:center;gap:10px;background:#fff;border-radius:14px;padding:9px 14px;
+  box-shadow:0 2px 10px rgba(75,46,66,.05);}
+.wnum{flex:none;width:28px;height:28px;border-radius:50%;background:var(--vinho);color:#fff;
+  font-family:'Karla',sans-serif;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;}
+.wpre{flex:none;min-width:150px;min-height:40px;background:#FBEEE7;border:2px dashed var(--coral);border-radius:10px;
+  padding:6px 14px;font-family:'Karla',sans-serif;font-weight:700;font-size:18px;color:var(--vinho);cursor:pointer;}
+.wpre.on{background:var(--coral);color:#fff;border-style:solid;}
+.wpre:active{transform:scale(.96);}
+.wfix{font-family:'Karla',sans-serif;font-weight:700;font-size:19px;color:var(--vinho);flex:none;}
+.winp{flex:1;min-width:0;height:40px;border:none;border-bottom:2.5px solid rgba(75,46,66,.25);background:transparent;
+  font-family:'Karla',sans-serif;font-size:19px;color:var(--tinta);padding:0 6px;outline:none;}
+.winp::placeholder{color:rgba(58,38,50,.3);font-style:italic;}
+.winp:focus{border-bottom-color:var(--coral);background:#FDF7F4;}
+.winp.filled{border-bottom-color:var(--salvia);font-weight:600;}
+.wdot{font-size:19px;color:var(--vinho);flex:none;}
+.wfoot{display:flex;align-items:center;gap:16px;margin-top:2px;}
 </style>
 </head>
 <body>
@@ -662,17 +686,22 @@ h2.stitle{font-size:38px;margin-bottom:6px;}
   <div class="slide light"><div class="wrap">
     <span class="badge">START · Future Time Expressions</span>
     <h2 class="stitle">When Will It Happen?</h2>
-    <p class="sub">As palavras que marcam o futuro na frase.</p>
+    <div class="tip">👆 <span><b>Tap</b> a time expression, then <b>type</b> the rest of your sentence.</span></div>
     <div class="body">
-      <div class="daygrid" style="grid-template-columns:repeat(6,1fr);">
-        <div class="vcard"><div class="vem">☀️</div><div class="ven">tomorrow</div><div class="vpt">amanhã</div><div class="vph">/tu-mó-rou/</div></div>
-        <div class="vcard"><div class="vem">📅</div><div class="ven">next week</div><div class="vpt">semana que vem</div><div class="vph">/nékst uík/</div></div>
-        <div class="vcard"><div class="vem">🗓️</div><div class="ven">next month</div><div class="vpt">mês que vem</div><div class="vph">/nékst mânth/</div></div>
-        <div class="vcard"><div class="vem">🎆</div><div class="ven">next year</div><div class="vpt">ano que vem</div><div class="vph">/nékst íar/</div></div>
-        <div class="vcard"><div class="vem">🌠</div><div class="ven">someday</div><div class="vpt">um dia</div><div class="vph">/sâm-dei/</div></div>
-        <div class="vcard"><div class="vem">🔮</div><div class="ven">in the future</div><div class="vpt">no futuro</div><div class="vph">/in dâ fiú-tcher/</div></div>
+      <div class="daygrid tapgrid" style="grid-template-columns:repeat(6,1fr);">
+        <div class="vcard tap" onclick="wPick(this)"><div class="vem">☀️</div><div class="ven">tomorrow</div><div class="vpt">amanhã</div><div class="vph">/tu-mó-rou/</div></div>
+        <div class="vcard tap" onclick="wPick(this)"><div class="vem">📅</div><div class="ven">next week</div><div class="vpt">semana que vem</div><div class="vph">/nékst uík/</div></div>
+        <div class="vcard tap" onclick="wPick(this)"><div class="vem">🗓️</div><div class="ven">next month</div><div class="vpt">mês que vem</div><div class="vph">/nékst mânth/</div></div>
+        <div class="vcard tap" onclick="wPick(this)"><div class="vem">🎆</div><div class="ven">next year</div><div class="vpt">ano que vem</div><div class="vph">/nékst íar/</div></div>
+        <div class="vcard tap" onclick="wPick(this)"><div class="vem">🌠</div><div class="ven">someday</div><div class="vpt">um dia</div><div class="vph">/sâm-dei/</div></div>
+        <div class="vcard tap" onclick="wPick(this)"><div class="vem">🔮</div><div class="ven">in the future</div><div class="vpt">no futuro</div><div class="vph">/in dâ fiú-tcher/</div></div>
       </div>
-      <div class="reminder" style="margin-top:18px;">📍 <span>Elas ficam no <b>começo</b> ou no <b>fim</b> da frase: <i>“Next year, I will travel.”</i> · <i>“I will travel next year.”</i></span></div>
+      <div class="wgrid" id="wgrid">
+        <div class="wline"><span class="wnum">1</span><button class="wpre" onclick="wClear(this)">tap a word</button><span class="wfix">I will</span><input class="winp" type="text" placeholder="travel to Italy" autocapitalize="off" autocomplete="off" enterkeyhint="next"><span class="wdot">.</span></div>
+        <div class="wline"><span class="wnum">2</span><button class="wpre" onclick="wClear(this)">tap a word</button><span class="wfix">I will</span><input class="winp" type="text" placeholder="visit my grandma" autocapitalize="off" autocomplete="off" enterkeyhint="next"><span class="wdot">.</span></div>
+        <div class="wline"><span class="wnum">3</span><button class="wpre" onclick="wClear(this)">tap a word</button><span class="wfix">I will</span><input class="winp" type="text" placeholder="…" autocapitalize="off" autocomplete="off" enterkeyhint="done"><span class="wdot">.</span></div>
+        <div class="wfoot"><button class="tbtn" style="margin-top:0;background:var(--vinho);" onclick="wReset()">Clear all</button><span class="mstat" id="w-stat">0 of 3 written</span><span class="mhint">📍 a expressão pode abrir ou fechar a frase</span></div>
+      </div>
     </div>
   </div><div class="wm">@teacher.anamiranda</div></div>
 </section>
@@ -1581,6 +1610,77 @@ function buildScramble(hostId, list){
 
 
 
+
+/* ---------- ESCRITA NO SLIDE ---------- */
+var wActive = null;
+
+function wLines(){ return document.querySelectorAll('#wgrid .wline'); }
+
+function wFocus(inp){ wActive = inp; }
+
+function wPick(card){
+  var txt = card.querySelector('.ven').textContent.trim();
+  var line = null;
+  if(wActive){ line = wActive.closest('.wline'); }
+  if(!line){
+    var all = wLines();
+    for(var i=0;i<all.length;i++){ if(!all[i].querySelector('.wpre').classList.contains('on')){ line = all[i]; break; } }
+    if(!line) line = all[0];
+  }
+  var pre = line.querySelector('.wpre');
+  pre.textContent = txt;
+  pre.classList.add('on');
+  var inp = line.querySelector('.winp');
+  wActive = inp;
+  inp.focus();
+  wCount();
+}
+
+function wClear(pre){
+  pre.textContent = 'tap a word';
+  pre.classList.remove('on');
+  wCount();
+}
+
+function wReset(){
+  wLines().forEach(function(l){
+    var pre = l.querySelector('.wpre');
+    pre.textContent = 'tap a word'; pre.classList.remove('on');
+    var inp = l.querySelector('.winp'); inp.value = ''; inp.classList.remove('filled');
+  });
+  document.querySelectorAll('.tapgrid .vcard.tap').forEach(function(c){ c.classList.remove('used'); });
+  wActive = null;
+  wCount();
+}
+
+function wCount(){
+  var n = 0, usadas = {};
+  wLines().forEach(function(l){
+    var pre = l.querySelector('.wpre'), inp = l.querySelector('.winp');
+    inp.classList.toggle('filled', inp.value.trim().length > 0);
+    if(pre.classList.contains('on') && inp.value.trim().length > 0) n++;
+    if(pre.classList.contains('on')) usadas[pre.textContent.trim()] = 1;
+  });
+  document.querySelectorAll('.tapgrid .vcard.tap').forEach(function(c){
+    c.classList.toggle('used', !!usadas[c.querySelector('.ven').textContent.trim()]);
+  });
+  var out = document.getElementById('w-stat');
+  if(out){
+    var total = wLines().length;
+    out.className = (n === total) ? 'mstat win' : 'mstat';
+    out.textContent = (n === total) ? '🎉 ' + total + ' sentences written!' : n + ' of ' + total + ' written';
+  }
+}
+
+function wInit(){
+  if(!document.getElementById('wgrid')) return;
+  document.querySelectorAll('#wgrid .winp').forEach(function(inp){
+    inp.addEventListener('focus', function(){ wFocus(inp); });
+    inp.addEventListener('input', wCount);
+  });
+  wCount();
+}
+
 Reveal.initialize({
   hash: true,
   slideNumber: 'c/t',
@@ -1596,6 +1696,7 @@ Reveal.initialize({
   center: false
 });
 Reveal.on('ready', () => {
+  wInit();
   mcRender();
   initScramble();
   buildMatch('m1');
