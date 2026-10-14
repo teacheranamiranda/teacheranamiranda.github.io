@@ -2034,8 +2034,465 @@ async function prevHomework() {
   }
 }
 
+/* ============================================================
+   REGISTRO DE RESPOSTAS
+   Grava tudo o que o aluno responde em qualquer exercicio na
+   colecao "respostas", doc {aluno}__e{ETAPA}a{AULA}.
+   itens   = estado final de cada exercicio
+   eventos = historico cronologico, incluindo as tentativas erradas
+   ============================================================ */
+let resp = { itens: {}, eventos: [] };
+let respRef = null, respTimer = null, respPend = false, respBusy = false;
+const RESP_MAX_EV = 600;
+
+async function respInit() {
+  if (DEMO) return;
+  try {
+    respRef = doc(db, "respostas", alunoId + "__e" + ETAPA + "a" + AULA);
+    const snap = await getDoc(respRef);
+    if (snap.exists()) {
+      const d = snap.data();
+      resp.itens = d.itens || {};
+      resp.eventos = Array.isArray(d.eventos) ? d.eventos : [];
+    }
+  } catch (e) { respRef = null; }
+}
+
+/* ---------- utilidades ---------- */
+function respSecs() { return document.querySelectorAll(".reveal .slides > section"); }
+function respSlide(el) {
+  try {
+    const sec = el && el.closest ? el.closest("section") : null;
+    if (!sec) return 0;
+    return Array.prototype.indexOf.call(respSecs(), sec) + 1;
+  } catch (e) { return 0; }
+}
+function respTxt(el) { return el ? (el.textContent || "").replace(/\s+/g, " ").trim() : ""; }
+function respLimpa(el) { return respTxt(el).replace(/^[○✓✔•]\s*/, ""); }
+function respTit(el) {
+  try {
+    const sec = el.closest("section");
+    return respTxt(sec && sec.querySelector(".stitle"));
+  } catch (e) { return ""; }
+}
+function respKey(el, nome) { return "s" + respSlide(el) + "_" + nome; }
+
+function respSet(key, obj) {
+  resp.itens[key] = Object.assign({}, resp.itens[key], obj, { em: new Date().toISOString() });
+  respFlush();
+}
+function respEv(obj) {
+  resp.eventos.push(Object.assign({ t: new Date().toISOString() }, obj));
+  if (resp.eventos.length > RESP_MAX_EV) resp.eventos = resp.eventos.slice(-RESP_MAX_EV);
+  respFlush();
+}
+function respFlush() {
+  if (DEMO) return;
+  respPend = true;
+  clearTimeout(respTimer);
+  respTimer = setTimeout(respWrite, 1200);
+}
+async function respWrite() {
+  if (!respPend || respBusy) return;
+  if (!respRef) { respPend = true; return; }   // ainda lendo o doc; o proximo evento reagenda
+  respBusy = true; respPend = false;
+  try {
+    await setDoc(respRef, {
+      aluno: alunoId, nome: st.nome || "", etapa: ETAPA, aula: AULA,
+      itens: resp.itens, eventos: resp.eventos,
+      atualizadoEm: serverTimestamp()
+    }, { merge: true });
+  } catch (e) { respPend = true; }
+  respBusy = false;
+}
+window.addEventListener("pagehide", function () { if (respPend) respWrite(); });
+document.addEventListener("visibilitychange", function () {
+  if (document.hidden && respPend) respWrite();
+});
+
+function respWrap(nome, depois) {
+  if (typeof window[nome] !== "function") return;
+  const orig = window[nome];
+  window[nome] = function () {
+    const r = orig.apply(this, arguments);
+    try { depois.apply(this, Array.prototype.slice.call(arguments)); } catch (e) {}
+    return r;
+  };
+}
+
+/* ---------- estados por tipo de exercicio ---------- */
+function respGapGrid(id) {
+  if (id) return document.getElementById(id + "-grid");
+  return document.getElementById("gf-grid") || document.querySelector(".gfgrid");
+}
+function respGapState(id, conferiu) {
+  const grid = respGapGrid(id);
+  if (!grid) return;
+  const gaps = grid.querySelectorAll(".gap");
+  let acertos = 0, preenchidos = 0;
+  const linhas = [];
+  gaps.forEach(function (g) {
+    const row = g.closest(".gfrow");
+    const k = row ? respTxt(row.querySelector(".mkey")) : "";
+    const v = respTxt(g);
+    let frase = "";
+    const txt = row ? row.querySelector(".txt") : null;
+    if (txt) {
+      txt.childNodes.forEach(function (nd) {
+        frase += (nd === g) ? (v || "____") : (nd.textContent || "");
+      });
+      frase = frase.replace(/\s+/g, " ").trim();
+    }
+    if (v) { preenchidos++; if (v === g.dataset.ans) acertos++; }
+    linhas.push({
+      item: k, frase: frase, resposta: v, esperado: g.dataset.ans,
+      ok: v ? (v === g.dataset.ans) : null
+    });
+  });
+  respSet(respKey(grid, "gapfill" + (id ? "_" + id : "")), {
+    ex: "gapfill", titulo: respTit(grid), total: gaps.length,
+    preenchidos: preenchidos, acertos: acertos, linhas: linhas,
+    conferiu: !!conferiu
+  });
+}
+
+function respOrderState(id, conferiu) {
+  const host = document.getElementById(id);
+  if (!host) return;
+  const itens = host.querySelectorAll(".orditem");
+  const linhas = [];
+  let acertos = 0, numerados = 0;
+  itens.forEach(function (el) {
+    const got = el.dataset.got ? parseInt(el.dataset.got, 10) : null;
+    const esp = parseInt(el.dataset.pos, 10);
+    if (got) { numerados++; if (got === esp) acertos++; }
+    linhas.push({ frase: respTxt(el.querySelector(".ords")), pos: got, esperado: esp });
+  });
+  linhas.sort(function (a, b) { return (a.pos || 99) - (b.pos || 99); });
+  respSet(respKey(host, "ordem_" + id), {
+    ex: "ordem", titulo: respTit(host), total: itens.length,
+    numerados: numerados, acertos: acertos, linhas: linhas, conferiu: !!conferiu
+  });
+}
+
+function respMatchState(id, el) {
+  const stt = (window.matchState || {})[id];
+  if (!stt) return;
+  respSet(respKey(el, "match_" + id), {
+    ex: "match", titulo: respTit(el), total: stt.total, acertos: stt.done
+  });
+}
+
+function respMcState(el) {
+  const MCq = window.MC || [];
+  const feitas = window.mcDone || [];
+  const linhas = [];
+  let acertos = 0;
+  MCq.forEach(function (d, k) {
+    const i = feitas[k];
+    if (i === undefined) { linhas.push({ q: d.q, escolheu: null, ok: null }); return; }
+    const ok = (i === d.correct);
+    if (ok) acertos++;
+    linhas.push({ q: d.q, escolheu: d.opts[i], ok: ok, certa: d.opts[d.correct] });
+  });
+  respSet(respKey(el, "multipla_escolha"), {
+    ex: "mc", titulo: respTit(el), total: MCq.length,
+    respondidas: feitas.filter(function (x) { return x !== undefined; }).length,
+    acertos: acertos, linhas: linhas
+  });
+}
+
+function respScrState(host) {
+  if (!host) return;
+  const linhas = [];
+  let certas = 0;
+  host.querySelectorAll(".scrrow").forEach(function (row) {
+    const drop = row.querySelector(".drop");
+    const res = row.querySelector(".sres");
+    const frase = Array.prototype.map.call(drop ? drop.children : [], function (c) {
+      return c.textContent;
+    }).join(" ");
+    const ok = !!(res && res.classList.contains("ok"));
+    const errou = !!(res && res.classList.contains("no"));
+    if (ok) certas++;
+    linhas.push({ frase: frase, ok: ok ? true : (errou ? false : null) });
+  });
+  respSet(respKey(host, "scramble_" + (host.id || "")), {
+    ex: "scramble", titulo: respTit(host), total: linhas.length,
+    certas: certas, linhas: linhas
+  });
+}
+
+function respEhState(card) {
+  const grid = card.closest(".ehgrid");
+  if (!grid) return;
+  const linhas = [];
+  grid.querySelectorAll(".eh").forEach(function (c) {
+    linhas.push({
+      frase: respTxt(c.querySelector(".s")),
+      tipo: c.classList.contains("bad") ? "errada" : "certa",
+      abriu: c.classList.contains("open")
+    });
+  });
+  respSet(respKey(grid, "error_hunt"), {
+    ex: "errorhunt", titulo: respTit(grid), total: linhas.length,
+    abertas: linhas.filter(function (l) { return l.abriu; }).length, linhas: linhas
+  });
+}
+
+function respFlipState(lab) {
+  const grid = lab.closest(".flipgrid");
+  if (!grid) return;
+  const linhas = [];
+  grid.querySelectorAll(".flip").forEach(function (l) {
+    const inp = l.querySelector("input");
+    linhas.push({
+      frase: respTxt(l.querySelector(".face.front .st")),
+      virou: !!(inp && inp.checked)
+    });
+  });
+  respSet(respKey(grid, "true_false"), {
+    ex: "flip", titulo: respTit(grid), total: linhas.length,
+    viradas: linhas.filter(function (l) { return l.virou; }).length, linhas: linhas
+  });
+}
+
+function respSortState(conferiu) {
+  const pool = document.getElementById("sortpool");
+  if (!pool) return;
+  const zonas = [];
+  let acertos = 0, colocados = 0;
+  document.querySelectorAll(".szone").forEach(function (z) {
+    const itens = [];
+    z.querySelectorAll(".szbox .pchip").forEach(function (c) {
+      const ok = (z.dataset.kind === c.dataset.kind);
+      if (ok) acertos++;
+      colocados++;
+      itens.push({ palavra: respTxt(c), ok: ok });
+    });
+    zonas.push({ grupo: z.dataset.kind || respTxt(z.querySelector(".szt")), itens: itens });
+  });
+  respSet(respKey(pool, "sort"), {
+    ex: "sort", titulo: respTit(pool), colocados: colocados,
+    acertos: acertos, zonas: zonas, conferiu: !!conferiu
+  });
+}
+
+function respWState() {
+  const grid = document.getElementById("wgrid");
+  if (!grid) return;
+  const linhas = [];
+  grid.querySelectorAll(".wline").forEach(function (l) {
+    const pre = l.querySelector(".wpre"), inp = l.querySelector(".winp");
+    const ini = pre && pre.classList.contains("on") ? respTxt(pre) : "";
+    const resto = inp ? inp.value.trim() : "";
+    if (ini || resto) linhas.push({ inicio: ini, resto: resto, frase: (ini + " " + resto).trim() });
+  });
+  respSet(respKey(grid, "frases_do_aluno"), {
+    ex: "escrita", titulo: respTit(grid), total: grid.querySelectorAll(".wline").length,
+    escritas: linhas.length, linhas: linhas
+  });
+}
+
+function respTextoState(el) {
+  respSet(respKey(el, "texto_" + (el.id || "livre")), {
+    ex: "texto", titulo: respTit(el), texto: el.value,
+    palavras: (el.value || "").trim() ? (el.value || "").trim().split(/\s+/).length : 0
+  });
+}
+
+/* ---------- instalacao dos ganchos ---------- */
+function respHooks() {
+  /* GAP FILL — duas assinaturas no acervo:
+     aula 1: fillGap(gap, w) / checkGap()      (um unico gf-grid)
+     aulas 2+: fillGap(id, gap, w) / checkGap(id)  (gf0-grid, gf1-grid...) */
+  respWrap("fillGap", function (a, b, c) {
+    let id = null, gap = a, w = b;
+    if (typeof a === "string") { id = a; gap = b; w = c; }
+    if (!gap || !gap.closest) return;
+    const row = gap.closest(".gfrow");
+    respEv({
+      ex: "gapfill", slide: respSlide(gap), jogo: id || "",
+      item: row ? respTxt(row.querySelector(".mkey")) : "",
+      resposta: w, esperado: gap.dataset.ans, ok: (w === gap.dataset.ans)
+    });
+  });
+  respWrap("gapCount", function (a) { respGapState(typeof a === "string" ? a : null); });
+  respWrap("checkGap", function (a) { respGapState(typeof a === "string" ? a : null, true); });
+
+  /* ORDEM */
+  respWrap("pickOrder", function (id, el) {
+    respEv({ ex: "ordem", slide: respSlide(el), jogo: id,
+             frase: respTxt(el.querySelector(".ords")),
+             pos: el.dataset.got ? parseInt(el.dataset.got, 10) : null });
+    respOrderState(id);
+  });
+  respWrap("checkOrder", function (id) { respOrderState(id, true); });
+
+  /* MATCH — guarda tambem a tentativa errada */
+  if (typeof window.pickRight === "function") {
+    const orig = window.pickRight;
+    window.pickRight = function (id, el, i) {
+      let sel = null;
+      try {
+        const stt = (window.matchState || {})[id];
+        if (stt && stt.sel) sel = stt.sel.i;
+      } catch (e) {}
+      const r = orig.apply(this, arguments);
+      try {
+        if (sel !== null) {
+          const pares = ((window.MATCH_SETS || {})[id] || {}).pairs || [];
+          respEv({
+            ex: "match", slide: respSlide(el), jogo: id,
+            tentou: pares[sel] ? pares[sel][0] : "", com: pares[i] ? pares[i][1] : "",
+            ok: (sel === i)
+          });
+          respMatchState(id, el);
+        }
+      } catch (e) {}
+      return r;
+    };
+  }
+
+  /* MULTIPLA ESCOLHA — nao registra a restauracao feita pelo mcRender */
+  let mcQuieto = false;
+  if (typeof window.mcRender === "function") {
+    const origR = window.mcRender;
+    window.mcRender = function () {
+      mcQuieto = true;
+      try { return origR.apply(this, arguments); } finally { mcQuieto = false; }
+    };
+  }
+  if (typeof window.mcCheck === "function") {
+    const origC = window.mcCheck;
+    window.mcCheck = function (i, btn) {
+      const r = origC.apply(this, arguments);
+      try {
+        if (!mcQuieto) {
+          const d = (window.MC || [])[window.mcI];
+          if (d) {
+            respEv({ ex: "mc", slide: respSlide(btn), q: d.q,
+                     escolheu: d.opts[i], certa: d.opts[d.correct], ok: (i === d.correct) });
+            respMcState(btn);
+          }
+        }
+      } catch (e) {}
+      return r;
+    };
+  }
+
+  /* SORT */
+  respWrap("sortCount", function () { respSortState(); });
+  respWrap("checkSort", function () { respSortState(true); });
+
+  /* FRASES DO ALUNO (widget de linhas) */
+  respWrap("wCount", function () { respWState(); });
+
+  /* botao Clear da caixa de texto livre */
+  respWrap("wrClear", function () {
+    const a = document.getElementById("wr-area");
+    if (a) respTextoState(a);
+  });
+
+  /* PERGUNTAS / METAS — o container muda de aula para aula (.askgrid, .hotgrid…),
+     entao a lista sai do proprio pai do botao clicado */
+  respWrap("askQ", function (el) {
+    const grid = el.parentNode;
+    const feitas = [], todas = [];
+    grid.querySelectorAll(".ask").forEach(function (a) {
+      const t = respLimpa(a);
+      todas.push(t);
+      if (a.classList.contains("asked")) feitas.push(t);
+    });
+    respSet(respKey(el, "perguntas"), {
+      ex: "perguntas", titulo: respTit(el), total: todas.length, feitas: feitas
+    });
+  });
+  respWrap("goalTick", function (el) {
+    const grid = el.parentNode;
+    const marcadas = [], todas = [];
+    grid.querySelectorAll(".goal").forEach(function (g) {
+      const t = respLimpa(g);
+      todas.push(t);
+      if (g.classList.contains("done")) marcadas.push(t);
+    });
+    respSet(respKey(el, "metas"), {
+      ex: "metas", titulo: respTit(el), total: todas.length, marcadas: marcadas
+    });
+  });
+
+  /* SCRAMBLE (delegado — o botao Check esta dentro de um closure) */
+  document.addEventListener("click", function (e) {
+    const b = e.target && e.target.closest ? e.target.closest(".scr .sbtn") : null;
+    if (!b) return;
+    const host = b.closest(".scr");
+    const row = b.closest(".scrrow");
+    setTimeout(function () {
+      try {
+        if (row && respTxt(b).toLowerCase().indexOf("check") === 0) {
+          const drop = row.querySelector(".drop");
+          const res = row.querySelector(".sres");
+          respEv({
+            ex: "scramble", slide: respSlide(b), jogo: host ? host.id : "",
+            frase: Array.prototype.map.call(drop ? drop.children : [], function (c) {
+              return c.textContent;
+            }).join(" "),
+            ok: !!(res && res.classList.contains("ok"))
+          });
+        }
+        respScrState(host);
+      } catch (err) {}
+    }, 0);
+  });
+
+  /* ERROR HUNT (delegado — onclick inline no cartao) */
+  document.addEventListener("click", function (e) {
+    const c = e.target && e.target.closest ? e.target.closest(".eh") : null;
+    if (!c) return;
+    setTimeout(function () {
+      try {
+        if (c.classList.contains("open")) {
+          respEv({ ex: "errorhunt", slide: respSlide(c), frase: respTxt(c.querySelector(".s")),
+                   tipo: c.classList.contains("bad") ? "errada" : "certa" });
+        }
+        respEhState(c);
+      } catch (err) {}
+    }, 0);
+  });
+
+  /* TRUE OR FALSE (cartoes que viram) */
+  document.addEventListener("change", function (e) {
+    const inp = e.target;
+    if (!inp || !inp.matches || !inp.matches(".flip input")) return;
+    const lab = inp.closest(".flip");
+    if (!lab) return;
+    try {
+      respEv({ ex: "flip", slide: respSlide(lab),
+               frase: respTxt(lab.querySelector(".face.front .st")), virou: !!inp.checked });
+      respFlipState(lab);
+    } catch (err) {}
+  });
+
+  /* CAIXAS DE TEXTO LIVRES (textarea e input de texto fora do widget de linhas) */
+  document.querySelectorAll("textarea, input[type=text]").forEach(function (el) {
+    if (el.closest("#wgrid")) return;
+    let t = null;
+    el.addEventListener("input", function () {
+      clearTimeout(t);
+      t = setTimeout(function () { try { respTextoState(el); } catch (err) {} }, 900);
+    });
+    el.addEventListener("blur", function () { try { respTextoState(el); } catch (err) {} });
+  });
+
+  /* checkpoints e fim da aula entram no historico */
+  respEv({ ex: "abriu", slide: (Reveal.getIndices().h + 1) });
+}
+
 /* boot do modulo, depois de tudo declarado */
 if (Reveal.isReady()) start(); else Reveal.on("ready", start);
+/* registro de respostas: le o que ja existe antes de instalar os ganchos */
+respInit().then(respHooks, respHooks);
+
 </script>
 </body>
 </html>

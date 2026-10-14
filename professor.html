@@ -3,19 +3,26 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Homework — The Level Up Method</title>
+<title>Painel do professor — The Level Up Method</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{ --vinho:#4B2E42; --coral:#D98E73; --creme:#FAF6F1; --salvia:#8A9B7E; --tinta:#3A2632; }
+  :root{ --vinho:#4B2E42; --coral:#D98E73; --creme:#FAF6F1; --salvia:#8A9B7E; --erro:#C15C4A; --tinta:#3A2632; }
   *{box-sizing:border-box;}
+  [hidden]{display:none !important;}
   body{margin:0;background:var(--creme);color:var(--tinta);font-family:'Karla',system-ui,sans-serif;}
-  header{background:var(--vinho);color:var(--creme);padding:22px 28px;}
+  header{background:var(--vinho);color:var(--creme);padding:22px 28px 0 28px;}
   header h1{font-family:'Libre Caslon Text',serif;font-size:26px;margin:0;}
-  header p{margin:4px 0 0 0;font-size:14px;opacity:.78;}
+  header p{margin:4px 0 16px 0;font-size:14px;opacity:.78;}
+  .tabs{display:flex;gap:4px;}
+  .tab{background:rgba(250,246,241,.14);color:var(--creme);border:0;border-radius:12px 12px 0 0;
+       padding:11px 20px;font-family:'Karla',sans-serif;font-size:14px;font-weight:700;cursor:pointer;}
+  .tab.on{background:var(--creme);color:var(--vinho);}
   .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:16px 28px;border-bottom:1px solid #e7ddcd;background:#fff;position:sticky;top:0;z-index:5;}
   .bar label{font-size:13px;font-weight:700;color:#6b5b3e;}
   select,input{font-family:'Karla',sans-serif;font-size:14px;padding:8px 12px;border:1px solid #ddd0ba;border-radius:10px;background:#fff;color:var(--tinta);}
+  .chk{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#6b5b3e;cursor:pointer;}
+  .chk input{width:16px;height:16px;padding:0;}
   .wrap{max-width:1000px;margin:0 auto;padding:24px 28px 60px 28px;}
   .msg{padding:50px 10px;text-align:center;color:#8a7d6a;}
   .card{background:#fff;border-radius:18px;padding:18px 20px;margin-bottom:14px;box-shadow:0 3px 14px rgba(75,46,66,.07);border-left:5px solid var(--coral);}
@@ -30,16 +37,47 @@
   .dl:hover{color:var(--vinho);}
   .contador{font-size:13px;color:#8a7d6a;margin-bottom:14px;}
   .nova{background:var(--salvia);color:#fff;border-radius:999px;padding:3px 10px;font-size:11px;font-weight:700;}
+
+  /* respostas */
+  .placar{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 4px 0;}
+  .pz{background:var(--creme);border-radius:12px;padding:8px 14px;font-size:13px;font-weight:700;color:#6b5b3e;}
+  .pz b{font-size:18px;color:var(--vinho);display:block;font-family:'Libre Caslon Text',serif;}
+  .ex{border-top:1px solid #efe6d8;padding:14px 0 2px 0;}
+  .exh{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;}
+  .exs{font-size:12px;font-weight:700;color:#9a8c78;text-transform:uppercase;letter-spacing:.04em;}
+  .ext{font-family:'Libre Caslon Text',serif;font-weight:700;font-size:16px;color:var(--vinho);}
+  .exn{font-size:13px;font-weight:700;color:#6b5b3e;margin-left:auto;}
+  .exn.bom{color:var(--salvia);}
+  .exn.ruim{color:var(--erro);}
+  ul.lin{list-style:none;padding:0;margin:9px 0 0 0;}
+  ul.lin li{font-size:14.5px;line-height:1.45;padding:5px 0 5px 24px;position:relative;border-bottom:1px dashed #f0e8da;}
+  ul.lin li:last-child{border-bottom:0;}
+  ul.lin li .ic{position:absolute;left:0;top:5px;font-size:13px;}
+  .ok{color:var(--salvia);}
+  .no{color:var(--erro);}
+  .vazio{color:#b0a493;}
+  .corr{color:var(--erro);font-weight:700;}
+  .cert{color:var(--salvia);font-weight:700;}
+  .texto{background:var(--creme);border-radius:12px;padding:12px 15px;margin-top:9px;font-size:15px;line-height:1.55;white-space:pre-wrap;}
+  .hist{margin-top:14px;border-top:1px solid #efe6d8;padding-top:10px;}
+  .hist summary{font-size:13px;font-weight:700;color:var(--coral);cursor:pointer;}
+  .hist ol{margin:10px 0 0 0;padding-left:20px;font-size:13.5px;line-height:1.5;color:#6b5b3e;}
+  .hist li{margin-bottom:3px;}
+  .hora{color:#b0a493;font-size:12px;}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Homework de áudio</h1>
-  <p>The Level Up Method · gravações enviadas pelos alunos</p>
+  <h1>Painel do professor</h1>
+  <p>The Level Up Method · tarefas e respostas dos alunos</p>
+  <div class="tabs">
+    <button class="tab on" id="t-audio" onclick="aba('audio')">🎧 Áudios da tarefa</button>
+    <button class="tab" id="t-resp" onclick="aba('resp')">📝 Respostas dos exercícios</button>
+  </div>
 </header>
 
-<div class="bar">
+<div class="bar" id="bar-audio">
   <label for="f-aluno">Aluno</label>
   <select id="f-aluno"><option value="">todos</option></select>
   <label for="f-aula">Aula</label>
@@ -51,9 +89,32 @@
   </select>
 </div>
 
+<div class="bar" id="bar-resp" hidden>
+  <label for="r-aluno">Aluno</label>
+  <select id="r-aluno"><option value="">todos</option></select>
+  <label for="r-aula">Aula</label>
+  <select id="r-aula"><option value="">todas</option></select>
+  <label class="chk"><input type="checkbox" id="r-hist"> mostrar as tentativas</label>
+  <label class="chk"><input type="checkbox" id="r-so-erro"> só o que errou</label>
+</div>
+
 <div class="wrap">
   <div id="lista"><p class="msg">Carregando gravações…</p></div>
+  <div id="lista-resp" hidden><p class="msg">Carregando respostas…</p></div>
 </div>
+
+<script>
+  function aba(qual){
+    const r = (qual === 'resp');
+    document.getElementById('t-audio').classList.toggle('on', !r);
+    document.getElementById('t-resp').classList.toggle('on', r);
+    document.getElementById('bar-audio').hidden = r;
+    document.getElementById('bar-resp').hidden = !r;
+    document.getElementById('lista').hidden = r;
+    document.getElementById('lista-resp').hidden = !r;
+    if (r && window.carregarRespostas) window.carregarRespostas();
+  }
+</script>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -69,7 +130,8 @@
   };
   const db = getFirestore(initializeApp(firebaseConfig));
 
-  let dados = [];
+  const esc = s => String(s == null ? "" : s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
   function dataBR(ts){
     if (!ts) return "";
@@ -80,11 +142,19 @@
     if (!ts) return 0;
     return (ts.toDate ? ts.toDate() : new Date(ts)).getTime();
   }
+  function hora(iso){
+    if (!iso) return "";
+    const d = new Date(iso);
+    return d.toLocaleTimeString("pt-BR", {hour:"2-digit", minute:"2-digit"});
+  }
   function dur(s){
     if (!s) return "";
     const m = Math.floor(s/60), r = s % 60;
     return m + ":" + (r < 10 ? "0" : "") + r;
   }
+
+  /* ===================== ÁUDIOS ===================== */
+  let dados = [];
 
   async function carregar(){
     const lista = document.getElementById("lista");
@@ -104,7 +174,7 @@
     const aulas  = [...new Set(dados.map(d => d.aula))].sort((a,b) => a-b);
     const selA = document.getElementById("f-aluno");
     const selL = document.getElementById("f-aula");
-    alunos.forEach(a => selA.insertAdjacentHTML("beforeend", '<option value="'+a+'">'+a+'</option>'));
+    alunos.forEach(a => selA.insertAdjacentHTML("beforeend", '<option value="'+esc(a)+'">'+esc(a)+'</option>'));
     aulas.forEach(a => selL.insertAdjacentHTML("beforeend", '<option value="'+a+'">Aula '+a+'</option>'));
     [selA, selL, document.getElementById("f-ordem")].forEach(s => s.onchange = render);
     render();
@@ -124,20 +194,236 @@
       const nova = msDe(d.criadoEm) > seteDias ? '<span class="nova">nova</span> ' : '';
       return '<div class="card">' +
         '<div class="top">' +
-          '<div class="who">' + nova + (d.nome || d.aluno) + '</div>' +
+          '<div class="who">' + nova + esc(d.nome || d.aluno) + '</div>' +
           '<div class="meta">' + dataBR(d.criadoEm) + (d.duracao ? ' · ' + dur(d.duracao) : '') + '</div>' +
         '</div>' +
         '<div style="margin-top:8px;">' +
-          '<span class="tag">Etapa ' + d.etapa + '</span><span class="tag">Aula ' + d.aula + '</span>' +
+          '<span class="tag">Etapa ' + esc(d.etapa) + '</span><span class="tag">Aula ' + esc(d.aula) + '</span>' +
         '</div>' +
-        (d.tarefa ? '<div class="tarefa">' + d.tarefa + '</div>' : '') +
+        (d.tarefa ? '<div class="tarefa">' + esc(d.tarefa) + '</div>' : '') +
         '<audio controls preload="none" src="' + src + '"></audio>' +
-        '<div class="acoes"><a class="dl" download="' + (d.nome || d.aluno) + '-aula' + d.aula +
+        '<div class="acoes"><a class="dl" download="' + esc(d.nome || d.aluno) + '-aula' + esc(d.aula) +
           (String(d.mime||"").indexOf("mp4") > -1 ? '.m4a' : '.webm') + '" href="' + src + '">baixar áudio</a></div>' +
       '</div>';
     }).join("");
     document.getElementById("lista").innerHTML =
       '<div class="contador">' + itens.length + (itens.length === 1 ? ' gravação' : ' gravações') + '</div>' + html;
+  }
+
+  /* ===================== RESPOSTAS ===================== */
+  let resp = [], respCarregado = false;
+
+  const NOME_EX = {
+    gapfill: "Gap fill", ordem: "Pôr em ordem", match: "Match", mc: "Múltipla escolha",
+    scramble: "Montar a frase", errorhunt: "Error hunt", flip: "True or false",
+    sort: "Separar em grupos", escrita: "Frases do aluno", texto: "Texto do aluno",
+    perguntas: "Perguntas feitas", metas: "Metas marcadas"
+  };
+
+  function icone(ok){ return ok === true ? '<span class="ic ok">✓</span>'
+                           : ok === false ? '<span class="ic no">✗</span>'
+                                          : '<span class="ic vazio">·</span>'; }
+
+  function placarDe(it){
+    if (it.acertos !== undefined && it.total) return { a: it.acertos, t: it.total };
+    if (it.certas !== undefined && it.total) return { a: it.certas, t: it.total };
+    return null;
+  }
+
+  function corpoEx(it, doc, chave){
+    const L = it.linhas || [];
+    switch (it.ex) {
+      case "match": {
+        const jogo = (chave.split("_")[2]) || "";
+        const erradas = (doc.eventos || []).filter(e =>
+          e.ex === "match" && e.ok === false && (!jogo || e.jogo === jogo));
+        if (!erradas.length)
+          return '<p class="lin" style="margin:9px 0 0 0;font-size:14.5px;"><span class="ok">✓</span> ' +
+                 'fechou os ' + (it.total || 0) + ' pares sem errar nenhuma vez.</p>';
+        return '<ul class="lin">' + erradas.map(e =>
+          '<li><span class="ic no">✗</span>tentou <b>' + esc(e.tentou) + '</b> com <b>' + esc(e.com) + '</b></li>'
+        ).join("") + '</ul>' +
+        '<div class="meta" style="margin-top:6px;">' + erradas.length +
+        (erradas.length === 1 ? ' tentativa errada antes de fechar' : ' tentativas erradas antes de fechar') + '</div>';
+      }
+      case "gapfill":
+        return '<ul class="lin">' + L.map(l =>
+          '<li>' + icone(l.ok) + esc(l.frase || l.item) +
+          (l.resposta ? '' : ' <span class="vazio">— não preencheu</span>') +
+          (l.ok === false ? ' <span class="corr">→ ' + esc(l.esperado) + '</span>' : '') +
+          '</li>').join("") + '</ul>';
+
+      case "ordem":
+        return '<ul class="lin">' + L.map(l =>
+          '<li>' + icone(l.pos ? l.pos === l.esperado : null) +
+          (l.pos ? '<b>' + l.pos + '.</b> ' : '<span class="vazio">—</span> ') + esc(l.frase) +
+          (l.pos && l.pos !== l.esperado ? ' <span class="corr">(era a ' + l.esperado + 'ª)</span>' : '') +
+          '</li>').join("") + '</ul>';
+
+      case "mc":
+        return '<ul class="lin">' + L.map(l =>
+          '<li>' + icone(l.ok) + esc(l.q) +
+          (l.escolheu == null ? ' <span class="vazio">— não respondeu</span>'
+            : '<br><span style="font-size:13.5px;">marcou <b class="' + (l.ok ? 'cert' : 'no') + '">' + esc(l.escolheu) + '</b>' +
+              (l.ok === false && l.certa ? ' · certa: <b class="cert">' + esc(l.certa) + '</b>' : '') + '</span>') +
+          '</li>').join("") + '</ul>';
+
+      case "scramble":
+        return '<ul class="lin">' + L.map(l =>
+          '<li>' + icone(l.ok) + (l.frase ? esc(l.frase) : '<span class="vazio">não montou</span>') +
+          '</li>').join("") + '</ul>';
+
+      case "errorhunt":
+        return '<ul class="lin">' + L.map(l =>
+          '<li>' + (l.abriu ? '<span class="ic ok">✓</span>' : '<span class="ic vazio">·</span>') +
+          esc(l.frase) + ' <span class="' + (l.tipo === 'errada' ? 'no' : 'ok') +
+          '" style="font-size:12.5px;font-weight:700;">(' + l.tipo + ')</span>' +
+          (l.abriu ? '' : ' <span class="vazio">— não abriu</span>') +
+          '</li>').join("") + '</ul>';
+
+      case "flip":
+        return '<ul class="lin">' + L.map(l =>
+          '<li>' + (l.virou ? '<span class="ic ok">✓</span>' : '<span class="ic vazio">·</span>') +
+          esc(l.frase) + (l.virou ? '' : ' <span class="vazio">— não virou</span>') +
+          '</li>').join("") + '</ul>';
+
+      case "sort":
+        return (it.zonas || []).map(z =>
+          '<div style="margin-top:9px;"><div class="exs">' + esc(z.grupo) + '</div><ul class="lin">' +
+          (z.itens.length ? z.itens.map(i => '<li>' + icone(i.ok) + esc(i.palavra) + '</li>').join("")
+                          : '<li><span class="ic vazio">·</span><span class="vazio">vazio</span></li>') +
+          '</ul></div>').join("");
+
+      case "escrita":
+        return '<ul class="lin">' + L.map(l =>
+          '<li><span class="ic ok">✎</span>' + esc(l.frase || ((l.inicio || '') + ' ' + (l.resto || '')).trim()) +
+          '</li>').join("") + '</ul>';
+
+      case "texto":
+        return it.texto ? '<div class="texto">' + esc(it.texto) + '</div>' +
+          '<div class="meta" style="margin-top:6px;">' + (it.palavras || 0) + ' palavras</div>'
+          : '<p class="vazio" style="margin:9px 0 0 0;">não escreveu nada</p>';
+
+      case "perguntas":
+        return '<ul class="lin">' + (it.feitas || []).map(f =>
+          '<li><span class="ic ok">✓</span>' + esc(f) + '</li>').join("") +
+          (!(it.feitas || []).length ? '<li><span class="ic vazio">·</span><span class="vazio">nenhuma</span></li>' : '') +
+          '</ul>';
+
+      case "metas":
+        return '<ul class="lin">' + (it.marcadas || []).map(f =>
+          '<li><span class="ic ok">✓</span>' + esc(f) + '</li>').join("") +
+          (!(it.marcadas || []).length ? '<li><span class="ic vazio">·</span><span class="vazio">nenhuma</span></li>' : '') +
+          '</ul>';
+
+      default:
+        return '<pre style="font-size:12px;overflow:auto;">' + esc(JSON.stringify(it, null, 1)) + '</pre>';
+    }
+  }
+
+  function linhaEvento(e){
+    const h = '<span class="hora">' + hora(e.t) + '</span> ';
+    const marca = e.ok === true ? '<span class="ok">✓</span> ' : e.ok === false ? '<span class="no">✗</span> ' : '';
+    if (e.ex === "gapfill") return h + marca + 'gap ' + esc(e.item) + ': <b>' + esc(e.resposta) + '</b>' +
+      (e.ok === false ? ' <span class="corr">(era ' + esc(e.esperado) + ')</span>' : '');
+    if (e.ex === "match") return h + marca + '<b>' + esc(e.tentou) + '</b> com <b>' + esc(e.com) + '</b>';
+    if (e.ex === "mc") return h + marca + esc(e.q) + ' → <b>' + esc(e.escolheu) + '</b>' +
+      (e.ok === false ? ' <span class="corr">(era ' + esc(e.certa) + ')</span>' : '');
+    if (e.ex === "scramble") return h + marca + '<b>' + esc(e.frase) + '</b>';
+    if (e.ex === "ordem") return h + 'numerou <b>' + esc(e.frase) + '</b> como ' + (e.pos || '—');
+    if (e.ex === "errorhunt") return h + 'abriu <b>' + esc(e.frase) + '</b> (' + esc(e.tipo) + ')';
+    if (e.ex === "flip") return h + (e.virou ? 'virou' : 'desvirou') + ' <b>' + esc(e.frase) + '</b>';
+    if (e.ex === "abriu") return h + 'abriu a aula no slide ' + e.slide;
+    return h + esc(e.ex) + ' · slide ' + e.slide;
+  }
+
+  window.carregarRespostas = async function(){
+    if (respCarregado) { renderResp(); return; }
+    const lista = document.getElementById("lista-resp");
+    try {
+      const snap = await getDocs(collection(db, "respostas"));
+      resp = [];
+      snap.forEach(d => resp.push(Object.assign({ id: d.id }, d.data())));
+    } catch (e) {
+      lista.innerHTML = '<p class="msg">Não consegui carregar as respostas. Confira a regra da coleção <b>respostas</b> no Firestore.</p>';
+      return;
+    }
+    respCarregado = true;
+    if (!resp.length) {
+      lista.innerHTML = '<p class="msg">Nenhuma resposta registrada ainda. Assim que um aluno abrir uma aula com o link dele, as respostas aparecem aqui.</p>';
+      return;
+    }
+    const alunos = [...new Set(resp.map(d => d.nome || d.aluno))].sort();
+    const aulas  = [...new Set(resp.map(d => d.aula))].sort((a,b) => a-b);
+    const selA = document.getElementById("r-aluno");
+    const selL = document.getElementById("r-aula");
+    alunos.forEach(a => selA.insertAdjacentHTML("beforeend", '<option value="'+esc(a)+'">'+esc(a)+'</option>'));
+    aulas.forEach(a => selL.insertAdjacentHTML("beforeend", '<option value="'+a+'">Aula '+a+'</option>'));
+    [selA, selL, document.getElementById("r-hist"), document.getElementById("r-so-erro")]
+      .forEach(s => s.onchange = renderResp);
+    renderResp();
+  };
+
+  function renderResp(){
+    const fa = document.getElementById("r-aluno").value;
+    const fl = document.getElementById("r-aula").value;
+    const verHist = document.getElementById("r-hist").checked;
+    const soErro = document.getElementById("r-so-erro").checked;
+
+    const itens = resp
+      .filter(d => (!fa || (d.nome || d.aluno) === fa) && (!fl || String(d.aula) === fl))
+      .sort((a,b) => msDe(b.atualizadoEm) - msDe(a.atualizadoEm));
+
+    const html = itens.map(d => {
+      const chaves = Object.keys(d.itens || {}).sort((a,b) =>
+        (parseInt(a.slice(1), 10) || 0) - (parseInt(b.slice(1), 10) || 0));
+
+      let somaA = 0, somaT = 0;
+      chaves.forEach(k => { const p = placarDe(d.itens[k]); if (p) { somaA += p.a; somaT += p.t; } });
+      const erros = (d.eventos || []).filter(e => e.ok === false).length;
+
+      const blocos = chaves.map(k => {
+        const it = d.itens[k];
+        const p = placarDe(it);
+        if (soErro && !(p && p.a < p.t)) return "";
+        const n = p ? (p.a + ' de ' + p.t) : "";
+        const cls = p ? (p.a === p.t ? ' bom' : (p.a === 0 ? ' ruim' : '')) : "";
+        return '<div class="ex">' +
+          '<div class="exh">' +
+            '<span class="exs">slide ' + esc(k.slice(1).split("_")[0]) + ' · ' + esc(NOME_EX[it.ex] || it.ex) + '</span>' +
+            '<span class="ext">' + esc(it.titulo || "") + '</span>' +
+            (n ? '<span class="exn' + cls + '">' + n + '</span>' : '') +
+          '</div>' + corpoEx(it, d, k) + '</div>';
+      }).join("");
+
+      const hist = verHist && (d.eventos || []).length
+        ? '<details class="hist" open><summary>histórico de tentativas (' + d.eventos.length + ')</summary><ol>' +
+          d.eventos.map(e => '<li>' + linhaEvento(e) + '</li>').join("") + '</ol></details>'
+        : (d.eventos || []).length
+          ? '<details class="hist"><summary>histórico de tentativas (' + d.eventos.length + ')</summary><ol>' +
+            d.eventos.map(e => '<li>' + linhaEvento(e) + '</li>').join("") + '</ol></details>'
+          : "";
+
+      return '<div class="card">' +
+        '<div class="top">' +
+          '<div class="who">' + esc(d.nome || d.aluno) + '</div>' +
+          '<div class="meta">' + dataBR(d.atualizadoEm) + '</div>' +
+        '</div>' +
+        '<div style="margin-top:8px;">' +
+          '<span class="tag">Etapa ' + esc(d.etapa) + '</span><span class="tag">Aula ' + esc(d.aula) + '</span>' +
+        '</div>' +
+        '<div class="placar">' +
+          (somaT ? '<div class="pz">acertos<b>' + somaA + ' / ' + somaT + '</b></div>' : '') +
+          '<div class="pz">exercícios<b>' + chaves.length + '</b></div>' +
+          '<div class="pz">tentativas erradas<b>' + erros + '</b></div>' +
+        '</div>' +
+        (blocos || '<p class="msg" style="padding:20px 0;">Acertou tudo o que tinha correção automática.</p>') +
+        hist +
+      '</div>';
+    }).join("");
+
+    document.getElementById("lista-resp").innerHTML =
+      '<div class="contador">' + itens.length + (itens.length === 1 ? ' aula com respostas' : ' aulas com respostas') + '</div>' + html;
   }
 
   carregar();
